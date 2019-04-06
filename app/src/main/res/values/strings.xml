@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Freaking News</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <!--Fragment camera strings-->
+
+    <string name="slide_fragment">Slide Fragment</string>
+    <string name="gallery_fragment">Gallery Fragment</string>
+    <string name="tools_fragment">Gallery Fragment</string>
+
+    <!--Tùy chọn-->
+    <string name="custom">Tùy chọn</string>
+    <string name="saved">Tin đã lưu</string>
+    <string name="night">Chế độ ban đêm</string>
+    <string name="notification">Nhận thông báo</string>
+    <!--News Categories-->
+    <string name="cate">Nội dung</string>
+    <string name="home">Home</string>
+    <string name="world">Thế giới</string>
+    <string name="business">Kinh doanh</string>
+    <string name="sport">Thể thao</string>
+    <string name="tech">Công nghệ</string>
+</resources>
