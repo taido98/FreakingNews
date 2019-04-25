@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,15 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.naviapplication.fagments.BusinessFragment;
 import com.example.naviapplication.fagments.HomeFragment;
-import com.example.naviapplication.fagments.NightFragment;
 import com.example.naviapplication.fagments.NotificationFragment;
 import com.example.naviapplication.fagments.SavedNewsFragment;
 import com.example.naviapplication.fagments.SportFragment;
@@ -35,13 +33,13 @@ import com.example.naviapplication.fagments.TechFragment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,8 +49,7 @@ public class MainActivity extends AppCompatActivity
     ArrayList<Article> articles;
     ListView listView;
     CustomAdapter customAdapter;
-    private String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
-    private SwitchCompat switcher;
+    private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.listview);
 
-       // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,6 +93,15 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO 1: sự kiện longclick để lưu tin vào data, thêm code ở đây
+                Toast.makeText(MainActivity.this, "Tin đã được lưu", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        switcher = (SwitchCompat) findViewById(R.id.switcher);
+        SwitchCompat switcher = (SwitchCompat) findViewById(R.id.switcher);
         switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -146,50 +152,50 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment = null;
+
         switch (id) {
             case R.id.nav_home: {
+                articles.clear();
+                customAdapter.notifyDataSetChanged();
+                new ReadData().execute(cate);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();
                 break;
             }
             case R.id.nav_business: {
-                cate = "https://24h.com.vn/upload/rss/taichinhbatdongsan.rss";
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        new ReadData().execute(cate);
-                    }
-                });
+                String business = "https://24h.com.vn/upload/rss/taichinhbatdongsan.rss";
+                articles.clear();
+                customAdapter.notifyDataSetChanged();
+                new ReadData().execute(business);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new BusinessFragment()).commit();
                 break;
             }
             case R.id.nav_sport: {
-                cate = "https://24h.com.vn/upload/rss/thethao.rss";
-                new ReadData().execute(cate);
+                String sport = "https://24h.com.vn/upload/rss/thethao.rss";
+                articles.clear();
+                customAdapter.notifyDataSetChanged();
+                new ReadData().execute(sport);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SportFragment()).commit();
                 break;
             }
             case R.id.nav_tech: {
-                cate = "https://24h.com.vn/upload/rss/congnghethongtin.rss";
-                new ReadData().execute(cate);
+                String it = "https://24h.com.vn/upload/rss/congnghethongtin.rss";
+                articles.clear();
+                customAdapter.notifyDataSetChanged();
+                new ReadData().execute(it);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new TechFragment()).commit();
                 break;
             }
             case R.id.nav_saved: {
+                articles.clear();
+                customAdapter.notifyDataSetChanged();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new SavedNewsFragment()).commit();
                 break;
             }
-//            case R.id.nav_night: {
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new NightFragment()).commit();
-//                break;
-//            }
             case R.id.nav_notification: {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new NotificationFragment()).commit();
@@ -204,6 +210,7 @@ public class MainActivity extends AppCompatActivity
     class ReadData extends AsyncTask<String, Integer, String> {
         @Override
         protected String doInBackground(String... strings) {
+
             return docNoiDung_Tu_URL(strings[0]);
         }
         @Override
@@ -232,7 +239,6 @@ public class MainActivity extends AppCompatActivity
             }
 
             customAdapter = new CustomAdapter(MainActivity.this, android.R.layout.simple_list_item_1, articles);
-            customAdapter.notifyDataSetChanged();
             listView.setAdapter(customAdapter);
             listView.invalidateViews();
 
@@ -242,7 +248,7 @@ public class MainActivity extends AppCompatActivity
 
     private String docNoiDung_Tu_URL(String theUrl){
         StringBuilder content = new StringBuilder();
-        try    {
+        try {
             // create a url object
             URL url = new URL(theUrl);
 
@@ -260,7 +266,7 @@ public class MainActivity extends AppCompatActivity
             }
             bufferedReader.close();
         }
-        catch(Exception e)    {
+        catch(Exception e) {
             e.printStackTrace();
         }
         return content.toString();

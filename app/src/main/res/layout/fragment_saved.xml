@@ -5,12 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".fagments.SavedNewsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:layout_centerInParent="true"
+    <GridView
+        android:id="@+id/Gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/saved" />
+        android:numColumns="3"/>
 
 </RelativeLayout>
