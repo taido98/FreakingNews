@@ -12,7 +12,7 @@
     <string name="saved">Tin đã lưu</string>
     <string name="your_story">Câu chuyện của bạn</string>
     <string name="try_again">Reconnect</string>
-    <string name="menu_refresh">refresh trang</string>
+    <string name="auth">Đăng nhập/xuất/đăng ký</string>
 
     <!--News Categories-->
     <string name="cate">Nội dung</string>
