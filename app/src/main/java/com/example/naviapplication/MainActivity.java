@@ -1,6 +1,11 @@
 package com.example.naviapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,22 +15,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.naviapplication.fagments.BusinessFragment;
+import com.example.naviapplication.fagments.ErrorFragment;
 import com.example.naviapplication.fagments.HomeFragment;
-import com.example.naviapplication.fagments.NotificationFragment;
 import com.example.naviapplication.fagments.SavedNewsFragment;
 import com.example.naviapplication.fagments.SportFragment;
 import com.example.naviapplication.fagments.TechFragment;
@@ -39,7 +43,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     ArrayList<Article> articles;
-    ListView listView;
+    SwipeMenuListView listView;
     CustomAdapter customAdapter;
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = (ListView) findViewById(R.id.listview);
+        listView = (SwipeMenuListView) findViewById(R.id.listView);
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -71,37 +74,88 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
         articles = new ArrayList<Article>();
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new ReadData().execute(cate);
+        //nếu có kết nối Internet
+        if (check_internet()) {
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment()).commit();
+                navigationView.setCheckedItem(R.id.nav_home);
             }
-        });
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new ReadData().execute(cate);
+                }
+            });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
-                intent.putExtra("link", articles.get(position).link);
-                startActivity(intent);
-            }
-        });
+            //tạo menu trượt
+            SwipeMenuCreator creator = new SwipeMenuCreator() {
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO 1: sự kiện longclick để lưu tin vào data, thêm code ở đây
-                Toast.makeText(MainActivity.this, "Tin đã được lưu", Toast.LENGTH_LONG).show();
-                return false;
+                @Override
+                public void create(SwipeMenu menu) {
+                    // tạo nút share
+                    SwipeMenuItem shareItem = new SwipeMenuItem(
+                            MainActivity.this);
+                    // nút share background
+                    shareItem.setBackground(new ColorDrawable(Color.rgb(66, 134, 244)));
+                    // width của nút share
+                    shareItem.setWidth(170);
+                    // tạo icon
+                    shareItem.setIcon(R.drawable.ic_share_white);
+                    // thêm vào menu
+                    menu.addMenuItem(shareItem);
+
+                    // tạo nút save
+                    SwipeMenuItem saveItem = new SwipeMenuItem(
+                            MainActivity.this);
+                    //background
+                    saveItem.setBackground(new ColorDrawable(Color.rgb(66, 244, 83)));
+                    // width
+                    saveItem.setWidth(170);
+                    // tạo icon
+                    saveItem.setIcon(R.drawable.ic_menu_save);
+                    // thêm vào menu
+                    menu.addMenuItem(saveItem);
+                }
+            };
+            listView.setMenuCreator(creator);
+
+            listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                    switch (index) {
+                        case 0:
+                            //khi click vào nút share, gọi hàm shareIt() để share
+                            Toast.makeText(MainActivity.this, articles.get(position).title, Toast.LENGTH_LONG).show();
+                            shareIt(articles.get(position));
+                            break;
+                        case 1:
+                            //TODO 1: sự kiện longclick để lưu tin vào data, thêm code ở đây
+                            Toast.makeText(MainActivity.this, "Tin đã được lưu", Toast.LENGTH_LONG).show();
+                            break;
+                    }
+                    // false : close the menu; true : not close the menu
+                    return false;
+                }
+            });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+                    intent.putExtra("link", articles.get(position).link);
+                    startActivity(intent);
+                }
+            });
+        } else {    //Nếu không có internet, hiển thị thông báo lỗi
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ErrorFragment()).commit();
+                navigationView.setCheckedItem(R.id.nav_home);
             }
-        });
+        }
     }
 
     @Override
@@ -113,23 +167,12 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
+ 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        SwitchCompat switcher = (SwitchCompat) findViewById(R.id.switcher);
-        switcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
-            }
-        });
         return true;
     }
 
@@ -147,59 +190,60 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //điều hướng menu
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch (id) {
-            case R.id.nav_home: {
-                articles.clear();
-                customAdapter.notifyDataSetChanged();
-                new ReadData().execute(cate);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
-                break;
-            }
-            case R.id.nav_business: {
-                String business = "https://24h.com.vn/upload/rss/taichinhbatdongsan.rss";
-                articles.clear();
-                customAdapter.notifyDataSetChanged();
-                new ReadData().execute(business);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new BusinessFragment()).commit();
-                break;
-            }
-            case R.id.nav_sport: {
-                String sport = "https://24h.com.vn/upload/rss/thethao.rss";
-                articles.clear();
-                customAdapter.notifyDataSetChanged();
-                new ReadData().execute(sport);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SportFragment()).commit();
-                break;
-            }
-            case R.id.nav_tech: {
-                String it = "https://24h.com.vn/upload/rss/congnghethongtin.rss";
-                articles.clear();
-                customAdapter.notifyDataSetChanged();
-                new ReadData().execute(it);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new TechFragment()).commit();
-                break;
-            }
-            case R.id.nav_saved: {
-                articles.clear();
-                customAdapter.notifyDataSetChanged();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SavedNewsFragment()).commit();
-                break;
-            }
-            case R.id.nav_notification: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new NotificationFragment()).commit();
-                break;
+        if (!check_internet()) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new ErrorFragment()).commit();
+        } else {
+            switch (id) {
+                case R.id.nav_home: {
+                    articles.clear();
+                    customAdapter.notifyDataSetChanged();
+                    new ReadData().execute(cate);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new HomeFragment()).commit();
+                    break;
+                }
+                case R.id.nav_business: {
+                    cate = "https://24h.com.vn/upload/rss/taichinhbatdongsan.rss";
+                    articles.clear();
+                    customAdapter.notifyDataSetChanged();
+                    new ReadData().execute(cate);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new BusinessFragment()).commit();
+                    break;
+                }
+                case R.id.nav_sport: {
+                    cate = "https://24h.com.vn/upload/rss/thethao.rss";
+                    articles.clear();
+                    customAdapter.notifyDataSetChanged();
+                    new ReadData().execute(cate);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new SportFragment()).commit();
+                    break;
+                }
+                case R.id.nav_tech: {
+                    cate = "https://24h.com.vn/upload/rss/congnghethongtin.rss";
+                    articles.clear();
+                    customAdapter.notifyDataSetChanged();
+                    new ReadData().execute(cate);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new TechFragment()).commit();
+                    break;
+                }
+                case R.id.nav_saved: {
+                    articles.clear();
+                    customAdapter.notifyDataSetChanged();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new SavedNewsFragment()).commit();
+                    break;
+                }
             }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -207,6 +251,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //function kiểm tra có internet đang kết nối không
+    private boolean check_internet() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+    //class aynctask để xử lý rss được đọc về
     class ReadData extends AsyncTask<String, Integer, String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -246,6 +298,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //function đọc nội dung từ URL
     private String docNoiDung_Tu_URL(String theUrl){
         StringBuilder content = new StringBuilder();
         try {
@@ -270,5 +323,15 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         return content.toString();
+    }
+
+    //function để chia sẻ tin trên các nền tảng
+    public void shareIt(Article p) {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String sharebody = p.link;
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "subject here");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, sharebody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 }

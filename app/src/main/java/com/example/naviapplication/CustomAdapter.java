@@ -25,7 +25,7 @@ public class CustomAdapter extends ArrayAdapter<Article> {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            view =  inflater.inflate(R.layout.fragment_home, null);
+            view =  inflater.inflate(R.layout.fragment_home, parent, false);
         }
         Article p = getItem(position);
         if (p != null) {
@@ -39,5 +39,4 @@ public class CustomAdapter extends ArrayAdapter<Article> {
         }
         return view;
     }
-
 }
