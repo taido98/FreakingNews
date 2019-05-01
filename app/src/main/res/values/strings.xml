@@ -1,26 +1,18 @@
 <resources>
-    <string name="app_name">Freaking News</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">post</string>
+    <string name="comment"><b>ADSJhlkdhlksadhs</b> ADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhs
+    ADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhs
+    ADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhs
+    ADSJhlkdhlksadhsADSJhlkdhlksadhs</string>
+    <string name="date">9:30 Ngày 26/04/2019</string>
+    <string name="inputHint">Viết bình luận...</string>
+    <string name="add_post">Đăng bài</string>
+    <string name="category_prompt">Thể thao</string>
 
-    <!--Tùy chọn-->
-    <string name="custom">Tùy chọn</string>
-    <string name="saved">Tin đã lưu</string>
-    <string name="your_story">Câu chuyện của bạn</string>
-    <string name="try_again">Reconnect</string>
-    <string name="auth">Đăng nhập/xuất/đăng ký</string>
-
-    <!--News Categories-->
-    <string name="cate">Nội dung</string>
-    <string name="home">Home</string>
-    <string name="business">Kinh doanh</string>
-    <string name="sport">Thể thao</string>
-    <string name="tech">Công nghệ</string>
-
-    <string name="error">You are not connected to network</string>
-
+    <string-array name="category_arrays">
+        <item>Thể thao</item>
+        <item>Công nghệ</item>
+        <item>Điện ảnh</item>
+        <item>Xiếc</item>
+    </string-array>
 </resources>
