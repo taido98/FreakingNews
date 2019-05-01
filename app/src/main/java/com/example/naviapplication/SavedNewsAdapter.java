@@ -13,9 +13,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class GridAdapter extends ArrayAdapter<Article> {
+public class SavedNewsAdapter extends ArrayAdapter<Article> {
 
-    public GridAdapter(Context context, int resource, List<Article> items) {
+    public SavedNewsAdapter(Context context, int resource, List<Article> items) {
         super(context, resource, items);
     }
 
@@ -25,14 +25,16 @@ public class GridAdapter extends ArrayAdapter<Article> {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            view =  inflater.inflate(R.layout.grid_element, null);
+            view =  inflater.inflate(R.layout.saved_item, null);
         }
         Article p = getItem(position);
         if (p != null) {
             // Anh xa + Gan gia tri
-            TextView txtTitle = (TextView) view.findViewById(R.id.gridtext);
+            TextView txtTitle = (TextView) view.findViewById(R.id.savedTitle);
             txtTitle.setText(p.title);
-            ImageView imageView = (ImageView) view.findViewById(R.id.gridimage);
+            TextView txtPubDate = (TextView) view.findViewById(R.id.savedPubDate);
+            txtPubDate.setText(p.pubDate);
+            ImageView imageView = (ImageView) view.findViewById(R.id.savedIamge);
             Picasso.with(getContext()).load(p.image).into(imageView);
         }
         return view;

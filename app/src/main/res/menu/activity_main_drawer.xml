@@ -27,15 +27,16 @@
                 android:id="@+id/nav_saved"
                 android:icon="@drawable/ic_menu_save"
                 android:title="@string/saved" />
+            <!--TODO 5: Tạo link đến phần bài đăng-->
             <item
-                android:id="@+id/nav_night"
-                android:icon="@drawable/ic_night_mode"
-                android:title="@string/night"
-                app:actionLayout="@layout/switch_layout"/>
+                android:id="@+id/nav_story"
+                android:icon="@drawable/ic_menu_story"
+                android:title="@string/your_story" />
             <item
-                android:id="@+id/nav_notification"
-                android:icon="@drawable/ic_menu_notifications"
-                android:title="@string/notification" />
+                android:id="@+id/menu_refresh"
+                app:showAsAction="never"
+                android:title="@string/menu_refresh"
+                android:icon="@drawable/ic_menu_refresh"/>
         </menu>
     </item>
 </menu>
