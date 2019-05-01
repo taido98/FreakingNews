@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,10 +49,11 @@ public class PostActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_post);
+        setContentView(R.layout.activity_post);
         this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_post_actionbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -70,6 +72,16 @@ public class PostActivity extends AppCompatActivity{
                 PostActivity.this.startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home : onBackPressed();
+            return true;
+            default:break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
