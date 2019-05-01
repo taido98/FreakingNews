@@ -10,7 +10,7 @@
     <!--Tùy chọn-->
     <string name="custom">Tùy chọn</string>
     <string name="saved">Tin đã lưu</string>
-    <string name="your_story">Câu chuyện của bạn</string>
+    <string name="your_story">Câu chuyện đời thường</string>
     <string name="try_again">Reconnect</string>
     <string name="auth">Đăng nhập/xuất/đăng ký</string>
 
@@ -22,5 +22,24 @@
     <string name="tech">Công nghệ</string>
 
     <string name="error">You are not connected to network</string>
+    <string name="title_activity_post">Bài đăng</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="add_post">Đăng bài</string>
+    <string name="category_prompt">Chọn thể loại</string>
+    <string name="date">02/05/2019</string>
+    <string name="inputHint">Viết bình luận...</string>
+    <string name="comment">Bình luận</string>
+
+    <string-array name="category_arrays">
+        <item>Kinh doanh</item>
+        <item>Thể thao</item>
+        <item>Công nghệ</item>
+    </string-array>
 
 </resources>
