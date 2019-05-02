@@ -15,8 +15,12 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
+<<<<<<< HEAD
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
+=======
+            android:layout_marginTop="16dp"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
@@ -25,10 +29,16 @@
             android:id="@+id/name_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
             android:text="Trần Văn Hưởng"
+=======
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:text="Tran Van Huong"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -37,7 +47,10 @@
 
         <Spinner
             android:id="@+id/category_post"
+<<<<<<< HEAD
             style="@android:style/Widget.Material.Spinner.Underlined"
+=======
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:layout_marginStart="4dp"
@@ -51,9 +64,14 @@
             android:id="@+id/category_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
+=======
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
             android:text="Chuyên mục:"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/avatar_post"
@@ -65,6 +83,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+<<<<<<< HEAD
+=======
+            android:layout_marginTop="8dp"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:ems="10"
@@ -73,7 +95,10 @@
             android:inputType="textMultiLine"
             android:maxHeight="300dp"
             android:textColor="@android:color/black"
+<<<<<<< HEAD
             android:textSize="16sp"
+=======
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/avatar_post" />
@@ -85,6 +110,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Pick Image"
+<<<<<<< HEAD
             android:textColor="#000000"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_pin" />
@@ -99,6 +125,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_post"
             tools:srcCompat="@tools:sample/avatars" />
+=======
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_post" />
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

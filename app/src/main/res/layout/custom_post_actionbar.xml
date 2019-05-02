@@ -1,41 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
+=======
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <Spinner
         android:id="@+id/category"
+<<<<<<< HEAD
         style="@android:style/Widget.Material.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_gravity="center|center_vertical"
+=======
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingRight="2dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
         android:entries="@array/category_arrays"
         android:prompt="@string/category_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<<<<<<< HEAD
     <Space
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="5555" />
 
+=======
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
     <Button
         android:id="@+id/add_post"
         style="@android:style/Widget.Button"
         android:layout_width="wrap_content"
+<<<<<<< HEAD
         android:layout_height="35dp"
         android:background="@drawable/custom_add_post"
         android:gravity="center"
+=======
+        android:layout_height="0dp"
+        android:background="@drawable/custom_add_post"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
         android:text="@string/add_post"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/category"
         app:layout_constraintEnd_toEndOf="parent"
+<<<<<<< HEAD
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/category"
         app:layout_constraintTop_toTopOf="@+id/category" />
 </LinearLayout>
+=======
+        app:layout_constraintTop_toTopOf="@+id/category" />
+</android.support.constraint.ConstraintLayout>
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52

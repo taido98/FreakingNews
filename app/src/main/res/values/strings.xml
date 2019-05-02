@@ -1,4 +1,5 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">Freaking News</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -42,5 +43,22 @@
         <item>Thể thao</item>
         <item>Công nghệ</item>
     </string-array>
+=======
+    <string name="app_name">post</string>
+    <string name="comment"><b>ADSJhlkdhlksadhs</b> ADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhs
+    ADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhs
+    ADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhsADSJhlkdhlksadhs
+    ADSJhlkdhlksadhsADSJhlkdhlksadhs</string>
+    <string name="date">9:30 Ngày 26/04/2019</string>
+    <string name="inputHint">Viết bình luận...</string>
+    <string name="add_post">Đăng bài</string>
+    <string name="category_prompt">Thể thao</string>
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
 
+    <string-array name="category_arrays">
+        <item>Thể thao</item>
+        <item>Công nghệ</item>
+        <item>Điện ảnh</item>
+        <item>Xiếc</item>
+    </string-array>
 </resources>

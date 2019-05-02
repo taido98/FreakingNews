@@ -32,6 +32,10 @@
         android:text="Đăng"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
+<<<<<<< HEAD
+=======
+        android:textSize="16sp"
+>>>>>>> 44f3274ce47ef28d649d9baa5914d9067f687e52
         app:layout_constraintBottom_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/title" />
