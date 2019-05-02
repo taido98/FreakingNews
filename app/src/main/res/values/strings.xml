@@ -35,6 +35,7 @@
     <string name="date">02/05/2019</string>
     <string name="inputHint">Viết bình luận...</string>
     <string name="comment">Bình luận</string>
+    <string name="choose">Chọn ảnh</string>
 
     <string-array name="category_arrays">
         <item>Kinh doanh</item>

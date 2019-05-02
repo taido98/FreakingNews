@@ -9,13 +9,11 @@
 
     <Spinner
         android:id="@+id/category"
+        style="@android:style/Widget.Material.Spinner"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_gravity="center|center_vertical"
         android:entries="@array/category_arrays"
-        android:paddingTop="4dp"
-        android:paddingRight="2dp"
-        android:paddingBottom="4dp"
         android:prompt="@string/category_prompt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
