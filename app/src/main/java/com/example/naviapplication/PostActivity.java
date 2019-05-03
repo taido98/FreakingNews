@@ -1,6 +1,7 @@
 package com.example.naviapplication;
 
 import android.content.Intent;
+import android.net.sip.SipSession;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,35 +17,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PostActivity extends AppCompatActivity{
 
-    private List<Post> getListPost(){
-        List<Post> list = new ArrayList<Post>();
-//        String im_url = "http://sohanews.sohacdn.com/thumb_w/660/2018/8/28/photo1535416480861-15354164808651145995032.png";
-//        String im_url = "https://kenh14cdn.com/2017/2017-05-11-1512101608333593537-1496656855992.jpg";
-        String im_url = "https://codiemgicoxuikhong.com/wp-content/uploads/2018/01/3851395811607223840785177179385096254783488n-1-1543141992498321668986.jpg";
-
-        Post post = new Post("Hoàng Văn", "13/4/2019", im_url, "Yêu nhầm bạn thân", 109);
-        Post post1 = new Post("Hoàng Văn", "13/4/2019", im_url, im_url, "Yêu nhầm bạn thân", 109);
-        Post post2 = new Post("Quang Trung", "12/3/20", im_url, im_url, "Em trai sau khi chuyển giới", 200);
-        Post post3 = new Post("Văn Hoàng", "29/2/2030", im_url, im_url, "Hồ điệp", 23098);
-
-        list.add(post);
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-
-        return list;
-    }
+    ArrayList<Post> list = new ArrayList<>();
+    ListView listPost;
+    CustomPostAdapter customPostAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +49,17 @@ public class PostActivity extends AppCompatActivity{
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
-        Toast.makeText(this,""+width,Toast.LENGTH_LONG).show();
 
-        List<Post> list = getListPost();
-        ListView listPost = (ListView) findViewById(R.id.listPost);
-        listPost.setAdapter(new CustomPostAdapter(list,this, width));
+//        List<Post> listData = getListPost();
+        listPost = (ListView) findViewById(R.id.listPost);
+//        List<Post> listData = loadPost("http://"+ip+"/FreakingNews/getPost.php");
+        customPostAdapter = new CustomPostAdapter(list,this, width);
+        listPost.setAdapter(customPostAdapter);
+        ip ip = new ip();
+        loadPost("http://"+ip.getIp()+"/FreakingNews/getPost.php");
+
+
+//        Toast.makeText(this,ip+"/FreakingNews/getPost.php",Toast.LENGTH_LONG).show();
 
         Button add_post = findViewById(R.id.add_post);
         add_post.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +69,42 @@ public class PostActivity extends AppCompatActivity{
                 PostActivity.this.startActivity(intent);
             }
         });
+    }
+
+    private void loadPost(String url){
+        list.removeAll(list);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+//                        Toast.makeText(PostActivity.this,response.toString(),Toast.LENGTH_LONG).show();
+                        for(int i = 0; i < response.length(); i++){
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                list.add(new Post(
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("created_at"),
+                                        jsonObject.getString("url_avatar"),
+                                        jsonObject.getString("url_image"),
+                                        jsonObject.getString("content"),
+                                        jsonObject.getInt("vote")
+                                ));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            customPostAdapter.notifyDataSetChanged();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(PostActivity.this,"Lỗi\n"+error,Toast.LENGTH_LONG).show();
+                    }
+                });
+        requestQueue.add(jsonArrayRequest);
+//        return list;
     }
 
     @Override
