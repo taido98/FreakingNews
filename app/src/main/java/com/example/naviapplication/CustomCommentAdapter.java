@@ -50,6 +50,7 @@ public class CustomCommentAdapter extends BaseAdapter {
             viewHolder.avatar = convertView.findViewById(R.id.avatar_comment);
             viewHolder.content = convertView.findViewById(R.id.content_comment);
             viewHolder.name = convertView.findViewById(R.id.name_comment);
+            viewHolder.date = convertView.findViewById(R.id.date_comment);
             convertView.setTag(viewHolder);
         }
         else {
@@ -59,12 +60,13 @@ public class CustomCommentAdapter extends BaseAdapter {
         Picasso.with(context).load(comment.getUrl_avatar()).into(viewHolder.avatar);
         viewHolder.content.setText(comment.getContent());
         viewHolder.name.setText(comment.getName());
+        viewHolder.date.setText(comment.getDate());
 
         return convertView;
     }
 
     static class ViewHolder{
         ImageView avatar;
-        TextView content, name;
+        TextView content, name, date;
     }
 }

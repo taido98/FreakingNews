@@ -37,6 +37,7 @@
     <string name="comment">Bình luận</string>
 
     <string-array name="category_arrays">
+        <item>Tất cả</item>
         <item>Kinh doanh</item>
         <item>Thể thao</item>
         <item>Công nghệ</item>

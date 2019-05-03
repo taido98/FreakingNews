@@ -11,12 +11,15 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,13 +32,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PostActivity extends AppCompatActivity{
 
     ArrayList<Post> list = new ArrayList<>();
     ListView listPost;
     CustomPostAdapter customPostAdapter;
+    Spinner category;
+    ip ip = new ip();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +62,20 @@ public class PostActivity extends AppCompatActivity{
 //        List<Post> listData = loadPost("http://"+ip+"/FreakingNews/getPost.php");
         customPostAdapter = new CustomPostAdapter(list,this, width);
         listPost.setAdapter(customPostAdapter);
-        ip ip = new ip();
-        loadPost("http://"+ip.getIp()+"/FreakingNews/getPost.php");
 
+        category = (Spinner) findViewById(R.id.category);
 
-//        Toast.makeText(this,ip+"/FreakingNews/getPost.php",Toast.LENGTH_LONG).show();
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                loadPost("http://"+ip.getIp()+"/FreakingNews/getPost.php", category.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Button add_post = findViewById(R.id.add_post);
         add_post.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +87,11 @@ public class PostActivity extends AppCompatActivity{
         });
     }
 
-    private void loadPost(String url){
+    private void loadPost(String url, final String type){
         list.removeAll(list);
+        Toast.makeText(PostActivity.this,type,Toast.LENGTH_LONG).show();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, null,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url+"?category="+type,null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -88,7 +105,9 @@ public class PostActivity extends AppCompatActivity{
                                         jsonObject.getString("url_avatar"),
                                         jsonObject.getString("url_image"),
                                         jsonObject.getString("content"),
-                                        jsonObject.getInt("vote")
+                                        jsonObject.getInt("vote"),
+                                        jsonObject.getInt("id"),
+                                        1
                                 ));
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -103,8 +122,15 @@ public class PostActivity extends AppCompatActivity{
                         Toast.makeText(PostActivity.this,"Lỗi\n"+error,Toast.LENGTH_LONG).show();
                     }
                 });
+//        {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> param = new HashMap<>();
+//                param.put("category",a);
+//                return param;
+//            }
+//        };
         requestQueue.add(jsonArrayRequest);
-//        return list;
     }
 
     @Override

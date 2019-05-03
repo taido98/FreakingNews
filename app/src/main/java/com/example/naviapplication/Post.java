@@ -1,18 +1,12 @@
 package com.example.naviapplication;
 
 public class Post {
-    private String name, date, url_avatar, url_post, content, id;
+    private String name, date, url_avatar, url_post, content;
+    private int idUser, id;
     private int vote;
-    public Post(String name, String date, String url_avatar, String url_post, String content, int vote){
-        this.name = name;
-        this.date = date;
-        this.url_avatar = url_avatar;
-        this.url_post = url_post;
-        this.content = content;
-        this.vote = vote;
-    }
+    public Post(){}
 
-    public Post(String name, String date, String url_avatar, String url_post, String content, int vote, String id) {
+    public Post(String name, String date, String url_avatar, String url_post, String content, int vote, int id, int idUser) {
         this.name = name;
         this.date = date;
         this.url_avatar = url_avatar;
@@ -20,15 +14,7 @@ public class Post {
         this.content = content;
         this.vote = vote;
         this.id = id;
-    }
-
-    public Post(String name, String date, String url_avatar, String content, int vote) {
-        this.name = name;
-        this.date = date;
-        this.url_avatar = url_avatar;
-        this.content = content;
-        this.vote = vote;
-        url_post = "null";
+        this.idUser = idUser;
     }
 
     public String getName() {
@@ -79,11 +65,19 @@ public class Post {
         this.vote = vote;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }

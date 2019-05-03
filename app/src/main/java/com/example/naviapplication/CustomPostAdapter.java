@@ -90,7 +90,8 @@ public class CustomPostAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, CommentActivity.class);
-//                    intent.putExtra("idComment", post.getId());
+                    intent.putExtra("idPost", ""+post.getId());
+                    intent.putExtra("idUser", ""+post.getIdUser());
                     context.startActivity(intent);
 //                    Toast.makeText(context,"Da chuyen",Toast.LENGTH_LONG).show();
                 }
