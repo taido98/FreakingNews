@@ -18,9 +18,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class CustomPostAdapter extends BaseAdapter {
@@ -28,6 +35,7 @@ public class CustomPostAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private int width;
+    ip ip = new ip();
 
     public CustomPostAdapter(List<Post> listPost, Context context, int width) {
         this.width = width;
@@ -71,19 +79,23 @@ public class CustomPostAdapter extends BaseAdapter {
             holder.like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, ""+post.getVote(), Toast.LENGTH_LONG).show();
-                    post.setVote(post.getVote()+1);
-                    holder.vote.setText(""+post.getVote());
-                    holder.like.setImageResource(R.mipmap.voted_up);
+//                    Toast.makeText(context, ""+post.getVote(), Toast.LENGTH_LONG).show();
+//                    post.setVote(post.getVote()+1);
+//                    holder.vote.setText(""+post.getVote());
+//                    holder.like.setImageResource(R.mipmap.voted_up);
+//                    setStt("http://"+ip.getIp()+"/FreakingNews/getStatus.php",1,post.getId(),1);
+                    Toast.makeText(context,""+ip.getIp(),Toast.LENGTH_LONG).show();
                 }
             });
             holder.dislike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,""+holder.imagePost.getWidth(), Toast.LENGTH_LONG).show();
-                    post.setVote(post.getVote()-1);
-                    holder.vote.setText(""+post.getVote());
-                    holder.dislike.setImageResource(R.mipmap.voted_down);
+//                    Toast.makeText(context,""+holder.imagePost.getWidth(), Toast.LENGTH_LONG).show();
+//                    post.setVote(post.getVote()-1);
+//                    holder.vote.setText(""+post.getVote());
+//                    holder.dislike.setImageResource(R.mipmap.voted_down);
+//                    setStt("http://"+ip.getIp()+"/FreakingNews/getStatus.php",1,post.getId(),-1);
+                    Toast.makeText(context,""+post.getId(),Toast.LENGTH_LONG).show();
                 }
             });
             holder.button.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +103,7 @@ public class CustomPostAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     Intent intent = new Intent(context, CommentActivity.class);
                     intent.putExtra("idPost", ""+post.getId());
-                    intent.putExtra("idUser", ""+post.getIdUser());
+                    intent.putExtra("idUser", "1");
                     context.startActivity(intent);
 //                    Toast.makeText(context,"Da chuyen",Toast.LENGTH_LONG).show();
                 }
@@ -101,6 +113,18 @@ public class CustomPostAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        if(post.getStatus() == 1){
+            holder.like.setImageResource(R.mipmap.voted_up);
+            holder.dislike.setImageResource(R.mipmap.vote_down);
+        }
+        if(post.getStatus() == -1){
+            holder.like.setImageResource(R.mipmap.vote_up);
+            holder.dislike.setImageResource(R.mipmap.voted_down);
+        }
+        if(post.getStatus() == 0){
+            holder.like.setImageResource(R.mipmap.vote_up);
+            holder.dislike.setImageResource(R.mipmap.vote_down);
+        }
         holder.name.setText(post.getName());
         holder.date.setText(post.getDate());
         holder.content.setText(post.getContent());
@@ -114,5 +138,24 @@ public class CustomPostAdapter extends BaseAdapter {
         ImageView avatar, imagePost, like, dislike;
         TextView name, date, content, vote;
         Button button;
+    }
+
+    private void setStt(String url, int idUser, int idPost, int setStatus){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url+"?type=setStt&idUser="+idUser+"&idPost="+idPost+"&status="+setStatus,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        status = Integer.valueOf(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        requestQueue.add(stringRequest);
     }
 }

@@ -86,9 +86,9 @@ public class CommentActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            customCommentAdapter = new CustomCommentAdapter(list,CommentActivity.this);
-                            listCmt.setAdapter(customCommentAdapter);
                         }
+                        customCommentAdapter = new CustomCommentAdapter(list,CommentActivity.this);
+                        listCmt.setAdapter(customCommentAdapter);
                     }
                 },
                 new Response.ErrorListener() {

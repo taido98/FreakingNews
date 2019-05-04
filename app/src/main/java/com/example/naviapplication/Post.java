@@ -2,19 +2,19 @@ package com.example.naviapplication;
 
 public class Post {
     private String name, date, url_avatar, url_post, content;
-    private int idUser, id;
+    private int status, id;
     private int vote;
     public Post(){}
 
-    public Post(String name, String date, String url_avatar, String url_post, String content, int vote, int id, int idUser) {
+    public Post(String name, String date, String url_avatar, String url_post, String content, int status, int id, int vote) {
         this.name = name;
         this.date = date;
         this.url_avatar = url_avatar;
         this.url_post = url_post;
         this.content = content;
-        this.vote = vote;
+        this.status = status;
         this.id = id;
-        this.idUser = idUser;
+        this.vote = vote;
     }
 
     public String getName() {
@@ -57,12 +57,12 @@ public class Post {
         this.content = content;
     }
 
-    public int getVote() {
-        return vote;
+    public int getStatus() {
+        return status;
     }
 
-    public void setVote(int vote) {
-        this.vote = vote;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -73,11 +73,11 @@ public class Post {
         this.id = id;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public int getVote() {
+        return vote;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setVote(int vote) {
+        this.vote = vote;
     }
 }

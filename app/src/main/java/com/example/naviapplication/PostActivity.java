@@ -59,13 +59,6 @@ public class PostActivity extends AppCompatActivity{
         width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
         listPost = (ListView) findViewById(R.id.listPost);
 
-
-//        List<Post> listData = getListPost();
-
-//        List<Post> listData = loadPost("http://"+ip+"/FreakingNews/getPost.php");
-
-//        listPost.setAdapter(customPostAdapter);
-
         category = (Spinner) findViewById(R.id.category);
 
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -94,7 +87,7 @@ public class PostActivity extends AppCompatActivity{
         list.removeAll(list);
         Toast.makeText(PostActivity.this,type,Toast.LENGTH_LONG).show();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url+"?category="+type,null,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url+"?category="+type+"&idUser=1",null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -107,16 +100,16 @@ public class PostActivity extends AppCompatActivity{
                                         jsonObject.getString("url_avatar"),
                                         jsonObject.getString("url_image"),
                                         jsonObject.getString("content"),
-                                        jsonObject.getInt("vote"),
+                                        jsonObject.getInt("status"),
                                         jsonObject.getInt("id"),
-                                        1
+                                        jsonObject.getInt("vote")
                                 ));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            customPostAdapter = new CustomPostAdapter(list,PostActivity.this, width);
-                            listPost.setAdapter(customPostAdapter);
                         }
+                        customPostAdapter = new CustomPostAdapter(list,PostActivity.this, width);
+                        listPost.setAdapter(customPostAdapter);
                     }
                 },
                 new Response.ErrorListener() {
