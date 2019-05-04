@@ -79,23 +79,51 @@ public class CustomPostAdapter extends BaseAdapter {
             holder.like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(context, ""+post.getVote(), Toast.LENGTH_LONG).show();
-//                    post.setVote(post.getVote()+1);
-//                    holder.vote.setText(""+post.getVote());
-//                    holder.like.setImageResource(R.mipmap.voted_up);
-//                    setStt("http://"+ip.getIp()+"/FreakingNews/getStatus.php",1,post.getId(),1);
-                    Toast.makeText(context,""+ip.getIp(),Toast.LENGTH_LONG).show();
+                    if (post.getStatus() == -1){
+                        setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),1);
+                        holder.dislike.setImageResource(R.mipmap.vote_down);
+                        holder.like.setImageResource(R.mipmap.voted_up);
+                        post.setStatus(1);
+                        post.setVote(post.getVote()+2);
+                    }
+                    else if(post.getStatus() == 0){
+                        setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),1);
+                        holder.like.setImageResource(R.mipmap.voted_up);
+                        post.setStatus(1);
+                        post.setVote(post.getVote()+1);
+                    }
+                    else {
+                        setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),0);
+                        holder.like.setImageResource(R.mipmap.vote_up);
+                        post.setStatus(0);
+                        post.setVote(post.getVote()-1);
+                    }
+                    holder.vote.setText(post.getVote()+"");
                 }
             });
             holder.dislike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(context,""+holder.imagePost.getWidth(), Toast.LENGTH_LONG).show();
-//                    post.setVote(post.getVote()-1);
-//                    holder.vote.setText(""+post.getVote());
-//                    holder.dislike.setImageResource(R.mipmap.voted_down);
-//                    setStt("http://"+ip.getIp()+"/FreakingNews/getStatus.php",1,post.getId(),-1);
-                    Toast.makeText(context,""+post.getId(),Toast.LENGTH_LONG).show();
+                    if (post.getStatus() == 1){
+                        setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),-1);
+                        holder.dislike.setImageResource(R.mipmap.voted_down);
+                        holder.like.setImageResource(R.mipmap.vote_up);
+                        post.setStatus(-1);
+                        post.setVote(post.getVote()-2);
+                    }
+                    else if(post.getStatus() == 0){
+                        setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),-1);
+                        holder.dislike.setImageResource(R.mipmap.voted_down);
+                        post.setStatus(-1);
+                        post.setVote(post.getVote()-1);
+                    }
+                    else {
+                        setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),0);
+                        holder.dislike.setImageResource(R.mipmap.vote_down);
+                        post.setStatus(0);
+                        post.setVote(post.getVote()+1);
+                    }
+                    holder.vote.setText(post.getVote()+"");
                 }
             });
             holder.button.setOnClickListener(new View.OnClickListener() {
@@ -113,11 +141,11 @@ public class CustomPostAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if(post.getStatus() == 1){
+        if(post.getStatus() > 0){
             holder.like.setImageResource(R.mipmap.voted_up);
             holder.dislike.setImageResource(R.mipmap.vote_down);
         }
-        if(post.getStatus() == -1){
+        if(post.getStatus() < 0){
             holder.like.setImageResource(R.mipmap.vote_up);
             holder.dislike.setImageResource(R.mipmap.voted_down);
         }
@@ -143,17 +171,20 @@ public class CustomPostAdapter extends BaseAdapter {
     private void setStt(String url, int idUser, int idPost, int setStatus){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                url+"?type=setStt&idUser="+idUser+"&idPost="+idPost+"&status="+setStatus,
+                url+"?idUser="+idUser+"&idPost="+idPost+"&status="+setStatus,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        status = Integer.valueOf(response);
+                        if(response.equals("Success"))
+                            Toast.makeText(context,response,Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(context,"Loi\n"+response,Toast.LENGTH_LONG);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(context,"Loi\n"+error,Toast.LENGTH_LONG);
                     }
                 });
         requestQueue.add(stringRequest);
