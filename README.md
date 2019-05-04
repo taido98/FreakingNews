@@ -1,2 +1,0 @@
-# FreakingNews
-project mobile
