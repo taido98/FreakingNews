@@ -45,12 +45,9 @@ public class CommentActivity extends AppCompatActivity {
         idPost = Integer.valueOf(intent.getStringExtra("idPost"));
         idUser = Integer.valueOf(intent.getStringExtra("idUser"));
 
-        loadCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php");
-
         listCmt = (ListView) findViewById(R.id.listComment);
-//        List<Post> listData = loadPost("http://"+ip+"/FreakingNews/getPost.php");
-        customCommentAdapter = new CustomCommentAdapter(list,this);
-//        listCmt.setAdapter(customCommentAdapter);
+
+        loadCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php");
 
         Button submit = findViewById(R.id.submit_cmt);
 
@@ -71,7 +68,6 @@ public class CommentActivity extends AppCompatActivity {
 
     private void loadCmt(String url){
         list.removeAll(list);
-//        Toast.makeText(CommentActivity.this,""+idPost,Toast.LENGTH_LONG).show();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url+"?idPost="+idPost+"&type=loadCmt",null,
                 new Response.Listener<JSONArray>() {
@@ -90,7 +86,7 @@ public class CommentActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            customCommentAdapter.notifyDataSetChanged();
+                            customCommentAdapter = new CustomCommentAdapter(list,CommentActivity.this);
                             listCmt.setAdapter(customCommentAdapter);
                         }
                     }
@@ -101,26 +97,16 @@ public class CommentActivity extends AppCompatActivity {
                         Toast.makeText(CommentActivity.this,"Lỗi\n"+error,Toast.LENGTH_LONG).show();
                     }
                 });
-//        {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> param = new HashMap<>();
-//                param.put("category",a);
-//                return param;
-//            }
-//        };
         requestQueue.add(jsonArrayRequest);
     }
 
     private void addCmt(String url, String content){
-//        Toast.makeText(CommentActivity.this,""+idPost,Toast.LENGTH_LONG).show();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url+"?idPost="+idPost+"&idUser="+idUser+"&content="+content+"&type=addCmt",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        Toast.makeText(CommentActivity.this,response.toString(),Toast.LENGTH_LONG).show();
                         if(response.trim().equals("Success"))
                             Toast.makeText(CommentActivity.this,"Comment thành công",Toast.LENGTH_LONG).show();
                         else

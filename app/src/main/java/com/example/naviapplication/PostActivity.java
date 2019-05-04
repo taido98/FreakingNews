@@ -41,6 +41,7 @@ public class PostActivity extends AppCompatActivity{
     ArrayList<Post> list = new ArrayList<>();
     ListView listPost;
     CustomPostAdapter customPostAdapter;
+    int width;
     Spinner category;
     ip ip = new ip();
 
@@ -55,13 +56,15 @@ public class PostActivity extends AppCompatActivity{
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
+        width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
+        listPost = (ListView) findViewById(R.id.listPost);
+
 
 //        List<Post> listData = getListPost();
-        listPost = (ListView) findViewById(R.id.listPost);
+
 //        List<Post> listData = loadPost("http://"+ip+"/FreakingNews/getPost.php");
-        customPostAdapter = new CustomPostAdapter(list,this, width);
-        listPost.setAdapter(customPostAdapter);
+
+//        listPost.setAdapter(customPostAdapter);
 
         category = (Spinner) findViewById(R.id.category);
 
@@ -95,7 +98,6 @@ public class PostActivity extends AppCompatActivity{
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-//                        Toast.makeText(PostActivity.this,response.toString(),Toast.LENGTH_LONG).show();
                         for(int i = 0; i < response.length(); i++){
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -112,7 +114,8 @@ public class PostActivity extends AppCompatActivity{
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            customPostAdapter.notifyDataSetChanged();
+                            customPostAdapter = new CustomPostAdapter(list,PostActivity.this, width);
+                            listPost.setAdapter(customPostAdapter);
                         }
                     }
                 },
@@ -122,14 +125,6 @@ public class PostActivity extends AppCompatActivity{
                         Toast.makeText(PostActivity.this,"Lỗi\n"+error,Toast.LENGTH_LONG).show();
                     }
                 });
-//        {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> param = new HashMap<>();
-//                param.put("category",a);
-//                return param;
-//            }
-//        };
         requestQueue.add(jsonArrayRequest);
     }
 
