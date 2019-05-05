@@ -1,11 +1,13 @@
 package com.example.naviapplication;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -58,7 +60,6 @@ public class CommentActivity extends AppCompatActivity {
                 Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
                 addCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php",input.getText().toString().trim());
                 input.setText("");
-                loadCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php");
             }
         });
 
@@ -89,6 +90,7 @@ public class CommentActivity extends AppCompatActivity {
                         }
                         customCommentAdapter = new CustomCommentAdapter(list,CommentActivity.this);
                         listCmt.setAdapter(customCommentAdapter);
+                        Toast.makeText(CommentActivity.this,"Load thanh cong",Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -107,8 +109,10 @@ public class CommentActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.trim().equals("Success"))
+                        if(response.trim().equals("Success")){
                             Toast.makeText(CommentActivity.this,"Comment thành công",Toast.LENGTH_LONG).show();
+                            loadCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php");
+                        }
                         else
                             Toast.makeText(CommentActivity.this,response,Toast.LENGTH_LONG).show();
                     }
