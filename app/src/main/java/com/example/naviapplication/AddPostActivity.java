@@ -12,8 +12,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,10 +39,12 @@ import java.util.Map;
 public class AddPostActivity extends AppCompatActivity {
 
     private ImageView imageView, imagePin;
-    private String PATH, imgName ,  im_url;
-    private String imgCode;
+    private String PATH, imgName , im_url;
+    private String imgCode, idTopic;
     private Bitmap bitmap;
     ip ip = new ip();
+    private Spinner category_post;
+    private EditText input_post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,24 @@ public class AddPostActivity extends AppCompatActivity {
 //        im_url = "https://scontent.fsgn2-3.fna.fbcdn.net/v/t1.0-9/58595586_2335381520025428_7214766066176622592_n.jpg?_nc_cat=108&_nc_oc=AQmkxqamW6GnIkygV8Hd9CHkvPMyTiTnrTJG_nXym340BAOyvm6cM1Y6w7nmnYGfz3U&_nc_ht=scontent.fsgn2-3.fna&oh=86463bbafdd68f9cda8a50e0da8f7370&oe=5D662368";
         imageView = findViewById(R.id.avatar_post);
         imagePin = (ImageView) findViewById(R.id.image_pin);
+        category_post = (Spinner) findViewById(R.id.category_post);
+        input_post = (EditText) findViewById(R.id.input_post);
+
+        category_post.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(category_post.getSelectedItem().toString().equals("Kinh doanh"))
+                    idTopic = "1";
+                else if(category_post.getSelectedItem().toString().equals("Thể thao"))
+                    idTopic = "2";
+                else idTopic = "3";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Picasso.with(this).load(im_url).into(imageView);
 
@@ -80,8 +103,8 @@ public class AddPostActivity extends AppCompatActivity {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                upload("http://"+ip.getIp()+"/FreakingNews/upload_image.php");
-//                Toast.makeText(AddPostActivity.this,"posted",Toast.LENGTH_LONG).show();
+                AddPostActivity.this.startActivity(new Intent(AddPostActivity.this,PostActivity.class));
+                upload("http://"+ip.getIp()+"/FreakingNews/newPost.php");
             }
         });
     }
@@ -101,7 +124,7 @@ public class AddPostActivity extends AppCompatActivity {
                 //Lấy dữ liệu dạng bitmap
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
                 imgCode = getBitMap(bitmap);
-                Toast.makeText(this,imgCode,Toast.LENGTH_LONG).show();
+//                Toast.makeText(this,imgCode,Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -118,16 +141,6 @@ public class AddPostActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home : onBackPressed();
-                return true;
-            default:break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     // Encode bitmap to String
     public String getBitMap(Bitmap bmp){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -137,6 +150,7 @@ public class AddPostActivity extends AppCompatActivity {
         return encodedImage;
     }
 
+    //Function upload post to server
     public void upload(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(AddPostActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
@@ -159,9 +173,25 @@ public class AddPostActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("imageName",imgName);
                 params.put("imageCode",imgCode);
+                params.put("idUser","1");
+                params.put("idTopic",idTopic);
+                params.put("content",input_post.getText().toString());
+
                 return params;
             }
         };
         requestQueue.add(stringRequest);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home : onBackPressed();
+                return true;
+            default:break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
