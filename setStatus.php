@@ -15,4 +15,5 @@
         die($connect->error);
 
     echo "Success";
+    $connect->close();
 ?>

@@ -36,4 +36,6 @@
         }
         echo "Success";
     }
+
+    $connect->close();
 ?>
