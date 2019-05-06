@@ -5,7 +5,7 @@
     }
     $connect->set_charset("utf8");
 
-    $sql = "USE upload_image";
+    $sql = "USE news";
     $connect->query($sql);
     // echo '<script>alert("Kết nối thành công")</script>';
 ?>
