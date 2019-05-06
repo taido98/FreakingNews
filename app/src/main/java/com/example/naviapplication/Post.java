@@ -1,34 +1,20 @@
 package com.example.naviapplication;
 
 public class Post {
-    private String name, date, url_avatar, url_post, content, id;
+    private String name, date, url_avatar, url_post, content;
+    private int status, id;
     private int vote;
-    public Post(String name, String date, String url_avatar, String url_post, String content, int vote){
-        this.name = name;
-        this.date = date;
-        this.url_avatar = url_avatar;
-        this.url_post = url_post;
-        this.content = content;
-        this.vote = vote;
-    }
+    public Post(){}
 
-    public Post(String name, String date, String url_avatar, String url_post, String content, int vote, String id) {
+    public Post(String name, String date, String url_avatar, String url_post, String content, int status, int id, int vote) {
         this.name = name;
         this.date = date;
         this.url_avatar = url_avatar;
         this.url_post = url_post;
         this.content = content;
-        this.vote = vote;
+        this.status = status;
         this.id = id;
-    }
-
-    public Post(String name, String date, String url_avatar, String content, int vote) {
-        this.name = name;
-        this.date = date;
-        this.url_avatar = url_avatar;
-        this.content = content;
         this.vote = vote;
-        url_post = "null";
     }
 
     public String getName() {
@@ -71,19 +57,27 @@ public class Post {
         this.content = content;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getVote() {
         return vote;
     }
 
     public void setVote(int vote) {
         this.vote = vote;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

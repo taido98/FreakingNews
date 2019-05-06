@@ -1,7 +1,7 @@
 package com.example.naviapplication;
 
 public class Comment {
-    private String name, content, url_avatar, id;
+    private String name, content, url_avatar, date, id;
 
     public Comment(String name, String content, String url_avatar) {
         this.name = name;
@@ -9,11 +9,11 @@ public class Comment {
         this.url_avatar = url_avatar;
     }
 
-    public Comment(String name, String content, String url_avatar, String id) {
+    public Comment(String name, String content, String url_avatar, String date) {
         this.name = name;
         this.content = content;
         this.url_avatar = url_avatar;
-        this.id = id;
+        this.date = date;
     }
 
     public String getName() {
@@ -38,5 +38,13 @@ public class Comment {
 
     public void setUrl_avatar(String url_avatar) {
         this.url_avatar = url_avatar;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

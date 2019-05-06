@@ -31,6 +31,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.naviapplication.fagments.BusinessFragment;
 import com.example.naviapplication.fagments.ErrorFragment;
 import com.example.naviapplication.fagments.HomeFragment;
+import com.example.naviapplication.fagments.LoginFragment;
 import com.example.naviapplication.fagments.SavedNewsFragment;
 import com.example.naviapplication.fagments.SportFragment;
 import com.example.naviapplication.fagments.TechFragment;
@@ -227,6 +228,13 @@ public class MainActivity extends AppCompatActivity
                     articles.clear();
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
                     MainActivity.this.startActivity(intent);
+                    break;
+                }
+                case R.id.nav_auth: {
+                    articles.clear();
+                    customAdapter.notifyDataSetChanged();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new LoginFragment()).commit();
                     break;
                 }
             }
