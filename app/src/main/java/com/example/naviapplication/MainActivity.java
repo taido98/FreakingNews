@@ -1,5 +1,6 @@
 package com.example.naviapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,12 +23,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.bumptech.glide.Glide;
 import com.example.naviapplication.fagments.BusinessFragment;
 import com.example.naviapplication.fagments.ErrorFragment;
 import com.example.naviapplication.fagments.HomeFragment;
@@ -54,7 +58,12 @@ public class MainActivity extends AppCompatActivity
     SwipeMenuListView listView;
     CustomAdapter customAdapter;
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
+    ImageView c_avatar;
+    TextView c_name, c_email;
+    private String name, email, url, id;
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +81,33 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
 
         listView = (SwipeMenuListView) findViewById(R.id.listView);
+
+        c_avatar = (ImageView) headerView.findViewById(R.id.c_avatar);
+        c_name = (TextView) headerView.findViewById(R.id.c_name);
+        c_email = (TextView) headerView.findViewById(R.id.c_email);
+
+        Intent intent = this.getIntent();
+        name = intent.getStringExtra("name");
+        email = intent.getStringExtra("email");
+        url = intent.getStringExtra("url");
+        id = intent.getStringExtra("id");
+
+
+        if(name == null)
+            name = "AndroidStudio";
+        if(email == null)
+            email = "AndroidStudio@gmail.com";
+        if(url == null)
+            url = "https://upload.wikimedia.org/wikipedia/en/thumb/0/01/Gais.png/220px-Gais.png";
+        c_name.setText(name);
+        c_email.setText(email);
+        Glide.with(this).load(url).into(c_avatar);
+
+
+        Toast.makeText(this,name+" is "+email+" is "+url,Toast.LENGTH_LONG).show();
 
         articles = new ArrayList<Article>();
 
@@ -227,6 +261,12 @@ public class MainActivity extends AppCompatActivity
                     articles.clear();
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
                     MainActivity.this.startActivity(intent);
+                    break;
+                }
+                case R.id.nav_auth: {
+                    articles.clear();
+                    Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
+                    MainActivity.this.startActivity(intent2);
                     break;
                 }
             }
