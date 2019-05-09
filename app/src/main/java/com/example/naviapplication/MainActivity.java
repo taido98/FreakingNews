@@ -27,6 +27,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -48,6 +55,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,8 +69,11 @@ public class MainActivity extends AppCompatActivity
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
     TextView c_name, c_email;
-    private String name, email, url_avatar, id;
+    private String name, email, url_avatar, id, test;
 
+    private String title_news, link_news;
+    private int id_User=2;
+    String urlSave ="http://192.168.1.5/FreakingNews/getSave.php";
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -90,12 +102,11 @@ public class MainActivity extends AppCompatActivity
         c_email = (TextView) headerView.findViewById(R.id.c_email);
 
         Intent intent = this.getIntent();
-        name = intent.getStringExtra("name");
         email = intent.getStringExtra("email");
+        name = intent.getStringExtra("name");
         url_avatar = intent.getStringExtra("url");
 
 //        id = intent.getStringExtra("id");
-
 
         if(name == null)
             name = "AndroidStudio";
@@ -108,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         Glide.with(this).load(url_avatar).into(c_avatar);
 
 
-        Toast.makeText(this,name+" is "+email+" is "+url_avatar,Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,name+" is "+email+" is "+url_avatar,Toast.LENGTH_LONG).show();
 
         articles = new ArrayList<Article>();
 
@@ -168,8 +179,14 @@ public class MainActivity extends AppCompatActivity
                             shareIt(articles.get(position));
                             break;
                         case 1:
+                            title_news = articles.get(position).title;
+                            link_news =  articles.get(position).link;
+
+                            addSave(urlSave);
+                            //urlSave la cai nao day
+//                            Toast.makeText(MainActivity.this, title_news, Toast.LENGTH_LONG).show();
                             //TODO 1: sự kiện longclick để lưu tin vào data, thêm code ở đây
-                            Toast.makeText(MainActivity.this, "Tin đã được lưu", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(MainActivity.this, "Tin đã được lưu", Toast.LENGTH_LONG).show();
                             break;
                     }
                     // false : close the menu; true : not close the menu
@@ -268,6 +285,7 @@ public class MainActivity extends AppCompatActivity
                     articles.clear();
                     Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
                     MainActivity.this.startActivity(intent2);
+
                     break;
                 }
             }
@@ -282,6 +300,41 @@ public class MainActivity extends AppCompatActivity
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+//    luu tin
+    private void addSave(String url){
+//        Toast.makeText(MainActivity.this, title_news, Toast.LENGTH_LONG).show();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Xay ra loi", Toast.LENGTH_SHORT).show();
+                        Log.d("@@@@@@????AAA","Loi!\n"+error.toString());
+                    }
+                }
+        ){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+//                params.put("usernameApp", txtEmail.getText().toString().trim());
+//                params.put("nameApp", txtName.getText().toString().trim());
+
+//                params.put("id_User", id_User);
+                params.put("title_news", "Title");
+                params.put("link_news", "Link");
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     //class aynctask để xử lý rss được đọc về

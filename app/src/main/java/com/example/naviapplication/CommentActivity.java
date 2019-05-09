@@ -58,7 +58,7 @@ public class CommentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText input = (EditText) findViewById(R.id.inputCmt) ;
                 Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
-                addCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php",input.getText().toString().trim());
+                addCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php",input.getText().toString().trim()+"@@@"+idUser);
                 input.setText("");
             }
         });
@@ -110,7 +110,7 @@ public class CommentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.trim().equals("Success")){
-                            Toast.makeText(CommentActivity.this,"Comment thành công",Toast.LENGTH_LONG).show();
+                            Toast.makeText(CommentActivity.this,"Comment thành công"+idUser,Toast.LENGTH_LONG).show();
                             loadCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php");
                         }
                         else

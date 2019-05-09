@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 001;
     Button sign_out;
-    String urlInsert ="http://12.22.88.105/FreakingNews/insert.php";
+    String urlInsert ="http://192.168.1.5/FreakingNews/insert.php";
 
 
     @SuppressLint("WrongViewCast")
@@ -153,9 +153,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         addUser(urlInsert);
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("name",name);
 //                        intent.putExtra("id",id);
                         intent.putExtra("email",email);
+                        intent.putExtra("name",name);
                         intent.putExtra("url",url_avatar);
 
                         LoginActivity.this.startActivity(intent);
@@ -177,29 +177,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             url_avatar= acct.getPhotoUrl().toString();
             Log.d("@@@AAA"+url_avatar,"Loi!\n");
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("name",name);
             intent.putExtra("email",email);
+            intent.putExtra("name",name);
             intent.putExtra("url",url_avatar);
-            LoginActivity.this.startActivity(intent);
-
             addUser(urlInsert);
+            LoginActivity.this.startActivity(intent);
 //            Log.v(" @@@@@@ ", " @@@@" + txtEmail.getText());
         }
     }
 
 
-    private void addUser(final String url){
+    private void addUser(String url){
+        Toast.makeText(LoginActivity.this, "Da goi addUser", Toast.LENGTH_SHORT).show();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.trim().equals("success")){
+                        Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
+//                        if (response.trim().equals("success")){
 //                            Toast.makeText(MainActivity.this, "them thanh cong", Toast.LENGTH_SHORT);
-                        }
-                        else {
+//                        }
+//                        else {
 //                            Toast.makeText(MainActivity.this, "Loi Dang nhap", Toast.LENGTH_SHORT);
-                        }
+//                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -216,8 +217,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                params.put("usernameApp", txtEmail.getText().toString().trim());
 //                params.put("nameApp", txtName.getText().toString().trim());
 
-                params.put("username", name);
-                params.put("name", email);
+                params.put("username", email);
+                params.put("name", name);
                 params.put("url", url_avatar);
                 return params;
             }
@@ -236,8 +237,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         email=null;
                         url_avatar =null;
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("name",name);
                         intent.putExtra("email",email);
+                        intent.putExtra("name",name);
                         intent.putExtra("url",url_avatar);
                         LoginActivity.this.startActivity(intent);
                     }
