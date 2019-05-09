@@ -1,16 +1,17 @@
 <?php
 include_once 'dbConnect.php';    
-
+session_start();
 $email =$_POST['username'];
 $name =$_POST['name'];
 $url_avatar = $_POST['url'];
-if (!$connect) {
-    die('Khong the ket noi den may chu: ' . mysqli_error($connect));
-    exit();
-}
-mysqli_set_charset($connect,'utf8');
-// $result=$connect->query("SELECT * FROM `users` WHERE 'email'='$email'");
-$result = mysqli_query($connect,"SELECT * FROM `users` WHERE email='$email'" );
+
+$result = mysqli_query($connect,"SELECT `id` FROM `users` WHERE email='$email'" );
+/*trong android studio khi dang nhap gui len email ah ?
+Cái này là sét xem có email trùng chưa
+thế khi đăng nhập từ facebook hay google thì sẽ gửi lên server cái gì?
+Gửi lên name, email, url_avatar
+ok
+*/
 if($result->num_rows == 0){
     $query = "INSERT INTO users VALUES(null, '$email', '$name', '$url_avatar')";
     if(mysqli_query($connect, $query)){
@@ -18,7 +19,16 @@ if($result->num_rows == 0){
     }
     else{
         echo "error @@@";
-    }	
+    }
+
 }
+else{
+    while($rows = $result->fetch_assoc()){
+        $_SESSION["id_User"] = $rows["id"];
+    }
+    echo $_SESSION["id_User"];
+}
+
+$connect->close();
 
 ?>

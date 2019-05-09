@@ -1,11 +1,14 @@
 <?php 
     include_once "dbconnect.php";
-
+    session_start();
     $idPost = $_GET["idPost"];
     $idUser = $_GET["idUser"];
     $type = $_GET["type"];
     $content = $_GET["content"];
-    // $idPost = 1;
+    $id_User=$_SESSION['id_User'];
+    // $id_user = $_SESSION["id_user"];
+    
+    //  $idPost = 16;
 
     if($type == "loadCmt"){
         $sql = "SELECT c.*, u.name, u.url_avatar FROM comments c
