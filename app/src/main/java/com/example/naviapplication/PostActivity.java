@@ -1,50 +1,51 @@
 package com.example.naviapplication;
 
 import android.content.Intent;
+import android.net.sip.SipSession;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PostActivity extends AppCompatActivity{
 
-    private List<Post> getListPost(){
-        List<Post> list = new ArrayList<Post>();
-//        String im_url = "http://sohanews.sohacdn.com/thumb_w/660/2018/8/28/photo1535416480861-15354164808651145995032.png";
-//        String im_url = "https://kenh14cdn.com/2017/2017-05-11-1512101608333593537-1496656855992.jpg";
-        String im_url = "https://codiemgicoxuikhong.com/wp-content/uploads/2018/01/3851395811607223840785177179385096254783488n-1-1543141992498321668986.jpg";
-
-        Post post = new Post("Hoàng Văn", "13/4/2019", im_url, "Yêu nhầm bạn thân", 109);
-        Post post1 = new Post("Hoàng Văn", "13/4/2019", im_url, im_url, "Yêu nhầm bạn thân", 109);
-        Post post2 = new Post("Quang Trung", "12/3/20", im_url, im_url, "Em trai sau khi chuyển giới", 200);
-        Post post3 = new Post("Văn Hoàng", "29/2/2030", im_url, im_url, "Hồ điệp", 23098);
-
-        list.add(post);
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-        list.add(post1);
-        list.add(post2);
-        list.add(post3);
-
-        return list;
-    }
+    ArrayList<Post> list = new ArrayList<>();
+    RecyclerView listPost;
+    PostAdapter postAdapter;
+    int width;
+    Spinner category;
+    ip ip = new ip();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +58,74 @@ public class PostActivity extends AppCompatActivity{
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
-        Toast.makeText(this,""+width,Toast.LENGTH_LONG).show();
+        width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
+        listPost = (RecyclerView) findViewById(R.id.listPost);
+        Post post = new Post();
+        post.setName("one");
+        post.setVote(12);
+        post.setStatus(1);
+        post.setContent("hhaa");
+        post.setId(1);
+        post.setDate("12/12/12");
+        post.setUrl_avatar("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        post.setUrl_post("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        ArrayList<String> listImage = new ArrayList<>();
+        listImage.add("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        listImage.add("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        listImage.add("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        post.setListImage(listImage);
 
-        List<Post> list = getListPost();
-        ListView listPost = (ListView) findViewById(R.id.listPost);
-        listPost.setAdapter(new CustomPostAdapter(list,this, width));
+        Post post2 = new Post();
+        post2.setName("two");
+        post2.setVote(120);
+        post2.setStatus(-1);
+        post2.setContent("hhaa998");
+        post2.setId(2);
+        post2.setDate("12/1222/12");
+        post2.setUrl_avatar("https://upload.wikimedia.org/wikipedia/commons/c/c7/Blue_rose-artificially_coloured.jpg");
+        post2.setUrl_post("https://upload.wikimedia.org/wikipedia/commons/c/c7/Blue_rose-artificially_coloured.jpg");
+        ArrayList<String> listImage2 = new ArrayList<>();
+        listImage2.add("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        listImage2.add("https://upload.wikimedia.org/wikipedia/commons/c/c7/Blue_rose-artificially_coloured.jpg");
+        listImage2.add("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        post2.setListImage(listImage2);
+
+        Post post3 = new Post();
+        post3.setName("three");
+        post3.setVote(120);
+        post3.setStatus(-1);
+        post3.setContent("leuleu");
+        post3.setId(2);
+        post3.setDate("12/1222/12");
+        post3.setUrl_avatar("https://upload.wikimedia.org/wikipedia/commons/c/c7/Blue_rose-artificially_coloured.jpg");
+        post3.setUrl_post("https://upload.wikimedia.org/wikipedia/commons/c/c7/Blue_rose-artificially_coloured.jpg");
+        ArrayList<String> listImage3 = new ArrayList<>();
+        listImage3.add("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        listImage3.add("https://upload.wikimedia.org/wikipedia/commons/c/c7/Blue_rose-artificially_coloured.jpg");
+        listImage3.add("https://icdn.dantri.com.vn/thumb_w/640/2018/5/23/net-cuoi-be-gai-9-1527053440039156820618.jpg");
+        post3.setListImage(listImage3);
+
+        list.add(post3);
+        list.add(post);
+        list.add(post2);
+
+        postAdapter = new PostAdapter(this,list,width);
+        listPost.setAdapter(postAdapter);
+        listPost.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        category = (Spinner) findViewById(R.id.category);
+
+//        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                loadPost("http://"+ip.getIp()+"/FreakingNews/getPost.php", category.getSelectedItem().toString());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
         Button add_post = findViewById(R.id.add_post);
         add_post.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +135,44 @@ public class PostActivity extends AppCompatActivity{
                 PostActivity.this.startActivity(intent);
             }
         });
+    }
+
+    private void loadPost(String url, final String type){
+        list.removeAll(list);
+        Toast.makeText(PostActivity.this,type,Toast.LENGTH_LONG).show();
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url+"?category="+type+"&idUser=1",null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for(int i = 0; i < response.length(); i++){
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+                                list.add(new Post(
+                                        jsonObject.getString("name"),
+                                        jsonObject.getString("created_at"),
+                                        jsonObject.getString("url_avatar"),
+                                        jsonObject.getString("url_image"),
+                                        jsonObject.getString("content"),
+                                        jsonObject.getInt("status"),
+                                        jsonObject.getInt("id"),
+                                        jsonObject.getInt("vote")
+                                ));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        listPost.setAdapter(new PostAdapter(PostActivity.this,list,width));
+                        listPost.setLayoutManager(new LinearLayoutManager(PostActivity.this, LinearLayoutManager.VERTICAL, false));
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(PostActivity.this,"Lỗi\n"+error,Toast.LENGTH_LONG).show();
+                    }
+                });
+        requestQueue.add(jsonArrayRequest);
     }
 
     @Override

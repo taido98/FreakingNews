@@ -37,9 +37,12 @@
     <string name="comment">Bình luận</string>
 
     <string-array name="category_arrays">
+        <item>Tất cả</item>
         <item>Kinh doanh</item>
         <item>Thể thao</item>
         <item>Công nghệ</item>
     </string-array>
+    <string name="facebook_app_id">2116263888664163</string>
+    <string name="fb_login_protocol_scheme">fb2116263888664163</string>
 
 </resources>

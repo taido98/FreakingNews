@@ -35,7 +35,7 @@ public class SavedNewsAdapter extends ArrayAdapter<Article> {
             TextView txtPubDate = (TextView) view.findViewById(R.id.savedPubDate);
             txtPubDate.setText(p.pubDate);
             ImageView imageView = (ImageView) view.findViewById(R.id.savedIamge);
-            Picasso.with(getContext()).load(p.image).into(imageView);
+            Picasso.get().load(p.image).into(imageView);
         }
         return view;
     }

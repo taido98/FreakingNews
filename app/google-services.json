@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "845257439986",
+    "firebase_url": "https://rss-news-237209.firebaseio.com",
+    "project_id": "rss-news-237209",
+    "storage_bucket": "rss-news-237209.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845257439986:android:113ff7dc7ddcead8",
+        "android_client_info": {
+          "package_name": "com.example.naviapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845257439986-ill0aavhe7bbbli8kf9jcsme41ou02gg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.naviapplication",
+            "certificate_hash": "a4521ec854a253bbfcd0eab4caf7f3ef300c96bf"
+          }
+        },
+        {
+          "client_id": "845257439986-3l8ebpogl627fqji9fngcg74n3c84jbj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.naviapplication",
+            "certificate_hash": "43994adef2de4a5a1fa0e92b2ed85cc26e42636b"
+          }
+        },
+        {
+          "client_id": "845257439986-n0jqcflvj4j62veddoakqd2if9nq4mfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASRRIAIAl8atCoy7flZs9NOA1azUbB8RU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845257439986-n0jqcflvj4j62veddoakqd2if9nq4mfm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

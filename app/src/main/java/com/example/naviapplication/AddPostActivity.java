@@ -1,36 +1,50 @@
 package com.example.naviapplication;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.naviapplication.util.RealPathUtil;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddPostActivity extends AppCompatActivity {
 
-    private ImageView imageView;
-
+    private ImageView imageView, imagePin;
+    private String PATH, imgName , im_url;
+    private String imgCode, idTopic;
+    private Bitmap bitmap;
+    ip ip = new ip();
+    private Spinner category_post;
+    private EditText input_post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +57,31 @@ public class AddPostActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        String im_url = "http://sohanews.sohacdn.com/thumb_w/660/2018/8/28/photo1535416480861-15354164808651145995032.png";
-        String im_url = "https://scontent.fsgn2-3.fna.fbcdn.net/v/t1.0-9/58595586_2335381520025428_7214766066176622592_n.jpg?_nc_cat=108&_nc_oc=AQmkxqamW6GnIkygV8Hd9CHkvPMyTiTnrTJG_nXym340BAOyvm6cM1Y6w7nmnYGfz3U&_nc_ht=scontent.fsgn2-3.fna&oh=86463bbafdd68f9cda8a50e0da8f7370&oe=5D662368";
+//        im_url = "http://"+ip.getIp()+"/FreakingNews/upload/34689401_2147325555551794_7654281988110548992_n.jpg";
+        im_url = "http://sohanews.sohacdn.com/thumb_w/660/2018/8/28/photo1535416480861-15354164808651145995032.png";
+//        im_url = "https://scontent.fsgn2-3.fna.fbcdn.net/v/t1.0-9/58595586_2335381520025428_7214766066176622592_n.jpg?_nc_cat=108&_nc_oc=AQmkxqamW6GnIkygV8Hd9CHkvPMyTiTnrTJG_nXym340BAOyvm6cM1Y6w7nmnYGfz3U&_nc_ht=scontent.fsgn2-3.fna&oh=86463bbafdd68f9cda8a50e0da8f7370&oe=5D662368";
         imageView = findViewById(R.id.avatar_post);
+        imagePin = (ImageView) findViewById(R.id.image_pin);
+        category_post = (Spinner) findViewById(R.id.category_post);
+        input_post = (EditText) findViewById(R.id.input_post);
 
-        Picasso.with(this).load(im_url).into(imageView);
+        category_post.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(category_post.getSelectedItem().toString().equals("Kinh doanh"))
+                    idTopic = "1";
+                else if(category_post.getSelectedItem().toString().equals("Thể thao"))
+                    idTopic = "2";
+                else idTopic = "3";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        Picasso.get().load(im_url).into(imageView);
 
         Button picker = (Button) findViewById(R.id.picker);
         picker.setOnClickListener(new View.OnClickListener() {
@@ -60,8 +94,17 @@ public class AddPostActivity extends AppCompatActivity {
                 // Show only images, no videos or anything else
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                // Always show the chooser (if there are multiple options available)
-                startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), 100);
+                startActivityForResult(intent,100);
+//                startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), 100);
+            }
+        });
+
+        Button post = (Button) findViewById(R.id.add_post);
+        post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddPostActivity.this.startActivity(new Intent(AddPostActivity.this,PostActivity.class));
+                upload("http://"+ip.getIp()+"/FreakingNews/newPost.php");
             }
         });
     }
@@ -70,52 +113,76 @@ public class AddPostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 100 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == 100 && resultCode == RESULT_OK ) {
+            PATH = RealPathUtil.getRealPath(this, data.getData());
+            Uri uri = Uri.fromFile(new File(PATH));
 
-            Uri uri = data.getData();
+            // Get name
+            imgName = PATH.substring(PATH.lastIndexOf("/")+1);
 
             try {
                 //Lấy dữ liệu dạng bitmap
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-
-                //Scale ảnh theo màn hình
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                int width = displayMetrics.widthPixels;
-                int height = bitmap.getHeight()*width/bitmap.getWidth();
-                Toast.makeText(this,width+"x"+height,Toast.LENGTH_LONG).show();
-                Bitmap resize = Bitmap.createScaledBitmap(bitmap,width, height,true);
-
-                //Load ảnh vào imageView
-                ImageView imagePin = (ImageView) findViewById(R.id.image_pin);
-                imagePin.setImageBitmap(resize);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                imgCode = getBitMap(bitmap);
+                Toast.makeText(this,imgCode,Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            String[] projection = { MediaStore.Images.Media.DATA };
 
-            Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-            cursor.moveToFirst();
+            //Trả về độ rộng của màn hình
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int width = displayMetrics.widthPixels;
 
-            int columnIndex = cursor.getColumnIndex(projection[0]);
-            String picturePath = cursor.getString(columnIndex); // returns null
-//            Log.d("Duong dan", picturePath);
-            cursor.close();
+            //Load ảnh vào imageView
+            Picasso.get().load(data.getData()).resize(width,0).into(imagePin);
+//            Toast.makeText(this, data.getData().toString(), Toast.LENGTH_LONG).show();
         }
     }
-//
-//    public String getPathFromURI(Uri contentUri) {
-//        String res = null;
-//        String[] proj = {MediaStore.Images.Media.DATA};
-//        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-//        if (cursor.moveToFirst()) {
-//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            res = cursor.getString(column_index);
-//        }
-//        cursor.close();
-//        return res;
-//    }
+
+    // Encode bitmap to String
+    public String getBitMap(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    //Function upload post to server
+    public void upload(String url){
+        RequestQueue requestQueue = Volley.newRequestQueue(AddPostActivity.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(AddPostActivity.this, response,Toast.LENGTH_LONG).show();
+                        Log.d("imageCode", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(AddPostActivity.this, "Lỗi\n"+error,Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("imageName",imgName);
+                params.put("imageCode",imgCode);
+                params.put("idUser","1");
+                params.put("idTopic",idTopic);
+                params.put("content",input_post.getText().toString());
+
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -126,4 +193,5 @@ public class AddPostActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class CustomCommentAdapter extends BaseAdapter {
     private List<Comment> listComment;
@@ -45,26 +44,28 @@ public class CustomCommentAdapter extends BaseAdapter {
         final Comment comment = this.listComment.get(position);
 
         if(convertView == null){
-            convertView = inflater.inflate(R.layout.list_comment_layout, null);
+            convertView = inflater.inflate(R.layout.item_comment, null);
             viewHolder = new ViewHolder();
             viewHolder.avatar = convertView.findViewById(R.id.avatar_comment);
             viewHolder.content = convertView.findViewById(R.id.content_comment);
-            viewHolder.name = convertView.findViewById(R.id.name_comment);
+            viewHolder.name = convertView.findViewById(R.id.name_post);
+            viewHolder.date = convertView.findViewById(R.id.date_comment);
             convertView.setTag(viewHolder);
         }
         else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Picasso.with(context).load(comment.getUrl_avatar()).into(viewHolder.avatar);
+        Picasso.get().load(comment.getUrl_avatar()).into(viewHolder.avatar);
         viewHolder.content.setText(comment.getContent());
         viewHolder.name.setText(comment.getName());
+        viewHolder.date.setText(comment.getDate());
 
         return convertView;
     }
 
     static class ViewHolder{
         ImageView avatar;
-        TextView content, name;
+        TextView content, name, date;
     }
 }

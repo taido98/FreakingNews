@@ -35,7 +35,7 @@ public class CustomAdapter extends ArrayAdapter<Article> {
             TextView txtPubDate = (TextView) view.findViewById(R.id.textViewPubDate);
             txtPubDate.setText(p.pubDate);
             ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-            Picasso.with(getContext()).load(p.image).into(imageView);
+            Picasso.get().load(p.image).into(imageView);
         }
         return view;
     }

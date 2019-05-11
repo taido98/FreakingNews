@@ -13,14 +13,15 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="180dp"
         android:background="@drawable/post"
         android:elevation="2dp"
         android:translationZ="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/listImagePager">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar"
@@ -33,7 +34,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/name_comment"
+            android:id="@+id/name_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -50,8 +51,8 @@
             android:layout_marginBottom="2dp"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/avatar"
-            app:layout_constraintStart_toStartOf="@+id/name_comment"
-            app:layout_constraintTop_toBottomOf="@+id/name_comment" />
+            app:layout_constraintStart_toStartOf="@+id/name_post"
+            app:layout_constraintTop_toBottomOf="@+id/name_post" />
 
         <TextView
             android:id="@+id/content"
@@ -100,13 +101,12 @@
             app:layout_constraintTop_toBottomOf="@+id/imagePost" />
 
         <ImageView
-            android:id="@+id/like"
+            android:id="@+id/upBtn"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="8dp"
-            android:src="@mipmap/vote_up"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imagePost" />
@@ -121,20 +121,33 @@
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/like"
+            app:layout_constraintStart_toEndOf="@+id/upBtn"
             app:layout_constraintTop_toBottomOf="@+id/imagePost" />
 
         <ImageView
-            android:id="@+id/dislike"
+            android:id="@+id/downBtn"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:src="@mipmap/vote_down"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/vote"
             app:layout_constraintTop_toBottomOf="@+id/imagePost" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/listImagePager"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
