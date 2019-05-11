@@ -6,4 +6,5 @@
     <color name="textColorPrimary">#000000</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="light_gray">#F0F0F0</color>
+    <color name="transparent">#00000000</color>
 </resources>

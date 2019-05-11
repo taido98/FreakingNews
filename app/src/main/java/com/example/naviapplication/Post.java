@@ -9,7 +9,7 @@ public class Post {
     private ArrayList<String> listImage;
     public Post(){}
 
-    public Post(String name, String date, String url_avatar, String url_post, String content, int status, int id, int vote) {
+    public Post(String name, String date, String url_avatar, String content, int status, int id, int vote, ArrayList<String> listImage) {
         this.name = name;
         this.date = date;
         this.url_avatar = url_avatar;
@@ -18,6 +18,7 @@ public class Post {
         this.status = status;
         this.id = id;
         this.vote = vote;
+        this.listImage = listImage;
     }
 
     public ArrayList<String> getListImage() {

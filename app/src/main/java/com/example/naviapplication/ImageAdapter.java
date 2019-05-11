@@ -28,8 +28,6 @@ public class ImageAdapter extends PagerAdapter {
         return listUrl.size();
     }
 
-
-
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
         return ((ConstraintLayout) o) == view;

@@ -3,6 +3,8 @@ package com.example.naviapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,6 +67,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         holder.vote.setText(""+post.getVote());
         Picasso.get().load(post.getUrl_avatar()).into(holder.avatar);
         holder.imagePost.setAdapter(new ImageAdapter(post.getListImage()));
+        if(post.getListImage().size() == 1){
+            holder.positionImage.setBackgroundColor(0x00000000);
+        }
+        else {
+            holder.positionImage.setText(1+holder.imagePost.getCurrentItem()+"/"+post.getListImage().size());
+            holder.imagePost.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageSelected(int i) {
+                    holder.positionImage.setText(++i+"/"+post.getListImage().size());
+                }
+                @Override
+                public void onPageScrolled(int i, float v, int i1) {
+                }
+                @Override
+                public void onPageScrollStateChanged(int i) {
+                }
+            });
+        }
         holder.upBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +152,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
-        TextView name, date, content, vote;
+        TextView name, date, content, vote, positionImage;
         ImageView avatar, upBtn, downBtn;
         Button commentButton;
         ViewPager imagePost;
@@ -143,6 +163,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             date = (TextView) itemView.findViewById(R.id.date);
             content = (TextView) itemView.findViewById(R.id.content);
             vote = (TextView) itemView.findViewById(R.id.vote);
+            positionImage = (TextView) itemView.findViewById(R.id.position);
             avatar = (ImageView) itemView.findViewById(R.id.avatar);
             upBtn = (ImageView) itemView.findViewById(R.id.upBtn);
             downBtn = (ImageView) itemView.findViewById(R.id.downBtn);
