@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class loading extends AppCompatActivity {
+public class Loading extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,11 +17,11 @@ public class loading extends AppCompatActivity {
             public void run() {
                 try {
                     super.run();
-                    sleep(1500);
+                    sleep(3000);
                 } catch (Exception e) {
 
                 } finally {
-                    Intent i = new Intent(loading.this,MainActivity.class);
+                    Intent i = new Intent(Loading.this,MainActivity.class);
                     startActivity(i);
                     finish();
                 }
