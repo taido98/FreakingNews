@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 04, 2019 at 04:23 AM
+-- Generation Time: May 12, 2019 at 02:45 PM
 -- Server version: 5.7.17-log
 -- PHP Version: 5.6.30
 
@@ -39,30 +39,9 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`id`, `idPost`, `idUser`, `content`, `created_at`) VALUES
-(1, 1, 1, 'Hay quá', '2019-05-03 00:05:08'),
-(2, 1, 2, 'Cũng được', '2019-05-03 00:05:17'),
-(3, 2, 1, 'Tuyệt vời', '2019-05-03 00:05:31'),
-(4, 3, 1, 'Công nghệ', '2019-05-03 00:05:49'),
-(5, 3, 2, 'Đây là công nghệ', '2019-05-03 00:05:59'),
-(6, 1, 1, 'Hay', '2019-05-04 00:18:56'),
-(7, 2, 1, '123', '2019-05-04 00:33:06'),
-(8, 2, 1, '1111', '2019-05-04 00:33:25'),
-(9, 2, 1, 'abc', '2019-05-04 00:34:11'),
-(10, 2, 1, 'abcd', '2019-05-04 00:34:24'),
-(11, 3, 1, 'abc', '2019-05-04 00:34:42'),
-(12, 3, 1, 'abcd', '2019-05-04 00:35:00'),
-(13, 1, 1, 'aaaa', '2019-05-04 00:35:14'),
-(14, 1, 1, 'aaaccc', '2019-05-04 00:35:22'),
-(15, 3, 1, 'abg', '2019-05-04 00:35:30'),
-(16, 3, 1, 'AA', '2019-05-04 00:36:36'),
-(17, 2, 1, 'ASD', '2019-05-04 00:37:25'),
-(18, 2, 1, 'AD', '2019-05-04 00:38:13'),
-(19, 2, 1, 'A', '2019-05-04 00:39:37'),
-(20, 2, 1, 'AS', '2019-05-04 00:40:10'),
-(21, 3, 1, 'AS', '2019-05-04 00:40:21'),
-(22, 2, 1, 'AS', '2019-05-04 00:40:35'),
-(23, 1, 1, 'AS', '2019-05-04 00:40:43'),
-(24, 3, 1, 'ABV', '2019-05-04 00:40:50');
+(29, 1, 1, 'lol@@@1', '2019-05-12 12:58:11'),
+(30, 1, 1, '2@@@1', '2019-05-12 13:44:08'),
+(31, 7, 1, 'haha@@@1', '2019-05-12 19:44:20');
 
 -- --------------------------------------------------------
 
@@ -98,9 +77,11 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `idUser`, `idTopic`, `content`, `url_image`, `created_at`, `last_update`) VALUES
-(1, 1, 1, 'Đây là chuyên mục Kinh doanh', 'https://scontent.fsgn2-3.fna.fbcdn.net/v/t1.0-9/58595586_2335381520025428_7214766066176622592_n.jpg?_nc_cat=108&_nc_oc=AQmkxqamW6GnIkygV8Hd9CHkvPMyTiTnrTJG_nXym340BAOyvm6cM1Y6w7nmnYGfz3U&_nc_ht=scontent.fsgn2-3.fna&oh=86463bbafdd68f9cda8a50e0da8f7370&oe=5D662368', '2019-05-03 00:03:29', '2019-05-03 00:03:29'),
-(2, 2, 2, 'Đây là chuyên mục thể thao', 'https://codiemgicoxuikhong.com/wp-content/uploads/2018/01/3851395811607223840785177179385096254783488n-1-1543141992498321668986.jpg', '2019-05-03 00:04:14', '2019-05-03 00:04:14'),
-(3, 2, 3, 'Đây là chuyên mục CÔNG NGHỆ', 'http://hinhanhdephd.com/wp-content/uploads/2016/01/tai-hinh-girl-xinh-lam-avatar-de-thuong-nhat-22.jpg', '2019-05-03 00:04:50', '2019-05-03 00:04:50');
+(1, 1, 1, 'test', '[{\"url\": \"http://192.168.0.109/FreakingNews/upload/photo-3-1535416390418891808922.png\"}, {\"url\": \"http://hinhanhdephd.com/wp-content/uploads/2016/01/tai-hinh-girl-xinh-lam-avatar-de-thuong-nhat-22.jpg\"}]', '2019-05-12 01:27:47', '2019-05-12 01:27:47'),
+(7, 1, 1, '1', '[{\"url\":\"http://192.168.0.109/FreakingNews/upload/photo-3-1535416390418891808922.png\"}]', '2019-05-12 02:12:25', '2019-05-12 02:12:25'),
+(8, 1, 1, 'haha', '[{\"url\":\"http://192.168.0.109/FreakingNews/upload/cho-pug-mat-xe-hinh-anh-cho-mat-xe-cho-mat-xe-de-thuong-1.jpg\"}]', '2019-05-12 12:58:29', '2019-05-12 12:58:29'),
+(9, 1, 1, 'haha', '[{\"url\":\"http://192.168.0.109/FreakingNews/upload/photo-3-1535416390418891808922.png\"}]', '2019-05-12 19:46:21', '2019-05-12 19:46:21'),
+(10, 1, 1, 'handle', '[{\"url\":\"http://192.168.0.109/FreakingNews/upload/212310618041193431006884986278710988847462n-1507458620893.jpg\"}]', '2019-05-12 20:31:08', '2019-05-12 20:31:08');
 
 -- --------------------------------------------------------
 
@@ -161,12 +142,11 @@ CREATE TABLE `votes` (
 --
 
 INSERT INTO `votes` (`id`, `idPost`, `idUser`, `status`) VALUES
-(1, 1, 1, 1),
-(2, 1, 2, 1),
-(3, 2, 1, -1),
-(4, 2, 2, -1),
-(5, 3, 1, 1),
-(6, 3, 2, -1);
+(7, 1, 1, 0),
+(8, 7, 1, 0),
+(9, 8, 1, 0),
+(10, 9, 1, 1),
+(11, 10, 1, -1);
 
 --
 -- Indexes for dumped tables
@@ -223,7 +203,7 @@ ALTER TABLE `votes`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `news_save`
 --
@@ -233,7 +213,7 @@ ALTER TABLE `news_save`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `topics`
 --
@@ -248,7 +228,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- Constraints for dumped tables
 --

@@ -4,16 +4,33 @@
     $idPost = $_GET["idPost"];
     $status = $_GET["status"];
         
-    $sql = "UPDATE votes
+    $sql = "SELECT * FROM votes WHERE idUser = $idUser AND idPost = $idPost";
+    $result = $connect->query($sql);
+
+    if(!$result)
+        die($connect->error);
+    else if($result->num_rows == 0){
+        $sql = "INSERT INTO votes 
+                VALUES(null, $idPost, $idUser, $status)";
+        $result = $connect->query($sql);
+    
+        if(!$result)
+            die($connect->error);
+
+        echo "Insert Success";
+    }
+    else{
+        $sql = "UPDATE votes
             SET status = $status
             WHERE idUser = $idUser
             AND idPost = $idPost";
     
-    $result = $connect->query($sql);
+        $result = $connect->query($sql);
     
-    if(!$result)
-        die($connect->error);
+        if(!$result)
+            die($connect->error);
 
-    echo "Success";
+        echo "Update Success";
+    }    
     $connect->close();
 ?>

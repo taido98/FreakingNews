@@ -11,7 +11,7 @@
             WHERE idUser = $idUser AND idPost = p.id) AS status
             FROM posts p JOIN users u ON p.idUser = u.id 
             JOIN topics t ON t.id = p.idTopic
-            JOIN votes v ON v.idPost = p.id
+            LEFT JOIN votes v ON v.idPost = p.id
             GROUP BY p.id
             ORDER BY vote ASC";
         $result = $connect->query($sql);
@@ -26,7 +26,7 @@
             }
         }
         echo json_encode($data);
-        // echo '<script>console.log('.json_encode($data).')</script>';
+        echo '<script>console.log('.json_encode($data).')</script>';
     }
     // echo '<script>console.log('.$category.')</script>';
 
@@ -37,7 +37,7 @@
             WHERE idUser = $idUser AND idPost = p.id) AS status
             FROM posts p JOIN users u ON p.idUser = u.id 
             JOIN topics t ON t.id = p.idTopic
-            JOIN votes v ON v.idPost = p.id
+            LEFT JOIN votes v ON v.idPost = p.id
             WHERE t.topic LIKE '$category'
             GROUP BY p.id
             ORDER BY vote ASC";
@@ -58,3 +58,7 @@
 
     $connect->close();
 ?>
+
+
+[{"url":"http://192.168.0.109/FreakingNews/upload/photo-3-1535416390418891808922.png"},
+{"url":"http://hinhanhdephd.com/wp-content/uploads/2016/01/tai-hinh-girl-xinh-lam-avatar-de-thuong-nhat-22.jpg"}]

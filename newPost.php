@@ -17,8 +17,8 @@
 		$path = "upload/$imageName";
 		// Đường dẫn
 		$actualpath = "http://".$ip_server."/FreakingNews/$path";
-		 	
-		$sql = "INSERT INTO posts(idUser, idTopic, content, url_image) VALUES($idUser,$idTopic,'$content','$actualpath')";	
+		$json = '[{"url":"'.$actualpath.'"}]';
+		$sql = "INSERT INTO posts(idUser, idTopic, content, url_image) VALUES($idUser,$idTopic,'$content','$json')";	
 		if($connect->query($sql)){
 			// đẩy data vào path
 			file_put_contents($path,base64_decode($imageCode));
