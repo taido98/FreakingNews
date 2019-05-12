@@ -59,9 +59,6 @@ public class PostActivity extends AppCompatActivity{
         getSupportActionBar().setCustomView(R.layout.custom_post_actionbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
         listPost = (RecyclerView) findViewById(R.id.listPost);
 
         containerPost = (SwipeRefreshLayout) findViewById(R.id.containerPost);
