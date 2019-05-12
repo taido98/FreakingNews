@@ -180,10 +180,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.equals("Success"))
-                            Toast.makeText(context,response,Toast.LENGTH_LONG).show();
-                        else
-                            Toast.makeText(context,"Loi\n"+response,Toast.LENGTH_LONG);
+                        Toast.makeText(context,response,Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {

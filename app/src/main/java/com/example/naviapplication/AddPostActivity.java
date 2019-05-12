@@ -1,5 +1,6 @@
 package com.example.naviapplication;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -27,6 +28,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.naviapplication.util.RealPathUtil;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -34,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AddPostActivity extends AppCompatActivity {
@@ -45,6 +52,7 @@ public class AddPostActivity extends AppCompatActivity {
     ip ip = new ip();
     private Spinner category_post;
     private EditText input_post;
+    private int REQUEST_GALLERY_IMAGE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +95,7 @@ public class AddPostActivity extends AppCompatActivity {
         picker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), 100);
-
-                Intent intent = new Intent();
-                // Show only images, no videos or anything else
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent,100);
-//                startActivityForResult(Intent.createChooser(intent, "Chọn ảnh"), 100);
+                onGallerySelected();
             }
         });
 
@@ -109,11 +109,31 @@ public class AddPostActivity extends AppCompatActivity {
         });
     }
 
+    protected void onGallerySelected(){
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE);
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 100 && resultCode == RESULT_OK ) {
+        if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK ) {
             PATH = RealPathUtil.getRealPath(this, data.getData());
             Uri uri = Uri.fromFile(new File(PATH));
 
