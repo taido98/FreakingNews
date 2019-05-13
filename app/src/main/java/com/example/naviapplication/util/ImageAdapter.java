@@ -1,4 +1,4 @@
-package com.example.naviapplication;
+package com.example.naviapplication.util;
 
 
 import android.app.Activity;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.naviapplication.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

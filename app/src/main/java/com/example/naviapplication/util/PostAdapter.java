@@ -1,10 +1,8 @@
-package com.example.naviapplication;
+package com.example.naviapplication.util;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.naviapplication.CommentActivity;
+import com.example.naviapplication.Post;
+import com.example.naviapplication.R;
+import com.example.naviapplication.ip;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     private Context context;
     private LayoutInflater layoutInflater;
     private int width;
-    ip ip = new ip();
+    com.example.naviapplication.ip ip = new ip();
 
     public PostAdapter(Context context, ArrayList<Post> listPost, int width) {
         this.context = context;
