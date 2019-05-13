@@ -69,11 +69,10 @@ public class MainActivity extends AppCompatActivity
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
     TextView c_name, c_email;
-    private String name, email, url_avatar, id, test;
-
+    private String name, email, url_avatar, id, idUser = "haha";
+    ip ip = new ip();
     private String title_news, link_news;
-    private int id_User=2;
-    String urlSave ="http://192.168.1.5/FreakingNews/getSave.php";
+    String urlSave ="http://"+ip.getIp()+"/FreakingNews/getSave.php";
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -105,7 +104,8 @@ public class MainActivity extends AppCompatActivity
         email = intent.getStringExtra("email");
         name = intent.getStringExtra("name");
         url_avatar = intent.getStringExtra("url");
-
+        idUser = intent.getStringExtra("idUser");
+        Toast.makeText(this,idUser,Toast.LENGTH_LONG).show();
 //        id = intent.getStringExtra("id");
 
         if(name == null)

@@ -58,8 +58,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 001;
     Button sign_out;
-    String urlInsert ="http://192.168.1.5/FreakingNews/insert.php";
+    ip ip = new ip();
+    String urlInsert ="http://"+ip.getIp()+"/FreakingNews/insert.php";
 
+    public LoginActivity(String name, String email, String url_avatar, String id) {
+        this.name = name;
+        this.email = email;
+        this.url_avatar = url_avatar;
+        this.id = id;
+    }
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -127,8 +134,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -142,7 +147,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onCompleted(JSONObject object,
                                             GraphResponse response) {
-                        // Application code
                         name = object.optString("name");
                         id = object.optString("id");
                         if(object.optString("email").equals(""))
@@ -152,13 +156,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         url_avatar = "https://graph.facebook.com/"+id+"/picture?type=large";
                         addUser(urlInsert);
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        intent.putExtra("id",id);
-                        intent.putExtra("email",email);
-                        intent.putExtra("name",name);
-                        intent.putExtra("url",url_avatar);
-
-                        LoginActivity.this.startActivity(intent);
                     }
                 });
         Bundle parameters = new Bundle();
@@ -176,37 +173,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             email = acct.getEmail();
             url_avatar= acct.getPhotoUrl().toString();
             Log.d("@@@AAA"+url_avatar,"Loi!\n");
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("email",email);
-            intent.putExtra("name",name);
-            intent.putExtra("url",url_avatar);
             addUser(urlInsert);
-            LoginActivity.this.startActivity(intent);
-//            Log.v(" @@@@@@ ", " @@@@" + txtEmail.getText());
         }
     }
 
 
-    private void addUser(String url){
-        Toast.makeText(LoginActivity.this, "Da goi addUser", Toast.LENGTH_SHORT).show();
+    public void addUser(String url){
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
-//                        if (response.trim().equals("success")){
-//                            Toast.makeText(MainActivity.this, "them thanh cong", Toast.LENGTH_SHORT);
-//                        }
-//                        else {
-//                            Toast.makeText(MainActivity.this, "Loi Dang nhap", Toast.LENGTH_SHORT);
-//                        }
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("email",email);
+                        intent.putExtra("name",name);
+                        intent.putExtra("url",url_avatar);
+                        intent.putExtra("idUser",response);
+                        LoginActivity.this.startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(MainActivity.this, "Xay ra loi", Toast.LENGTH_SHORT);
                         Log.d("AAA","Loi!\n"+error.toString());
                     }
                 }
@@ -214,10 +202,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-//                params.put("usernameApp", txtEmail.getText().toString().trim());
-//                params.put("nameApp", txtName.getText().toString().trim());
-
-                params.put("username", email);
+                params.put("email", email);
                 params.put("name", name);
                 params.put("url", url_avatar);
                 return params;
