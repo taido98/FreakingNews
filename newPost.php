@@ -3,7 +3,6 @@
     include_once "dbconnect.php";
 
 	$response = "one err";
-	$ip_server = $_SERVER['SERVER_ADDR'];
 
     if($_SERVER['REQUEST_METHOD']=='POST') {
 		$imageName = $_POST['imageName'];	
@@ -16,7 +15,7 @@
 		// imaName là tên ảnh, để không trùng các bạn có thể add thêm ngày tháng cho nó
 		$path = "upload/$imageName";
 		// Đường dẫn
-		$actualpath = "http://".$ip_server."/FreakingNews/$path";
+		$actualpath = "http://localhost/FreakingNews/$path";
 		$json = '[{"url":"'.$actualpath.'"}]';
 		$sql = "INSERT INTO posts(idUser, idTopic, content, url_image) VALUES($idUser,$idTopic,'$content','$json')";	
 		if($connect->query($sql)){

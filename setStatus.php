@@ -1,6 +1,6 @@
 <?php 
     include_once "dbconnect.php";
-    $idUser = $_GET["idUser"];
+    $idUser = (int) $_GET["idUser"];
     $idPost = $_GET["idPost"];
     $status = $_GET["status"];
         
