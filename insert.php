@@ -1,9 +1,10 @@
 <?php
 include_once 'dbConnect.php';    
 session_start();
-$email =$_POST['username'];
+$email =$_POST['email'];
 $name =$_POST['name'];
 $url_avatar = $_POST['url'];
+$idUser=$_GET['idUser'];
 
 $result = mysqli_query($connect,"SELECT `id` FROM `users` WHERE email='$email'" );
 /*trong android studio khi dang nhap gui len email ah ?
@@ -15,7 +16,11 @@ ok
 if($result->num_rows == 0){
     $query = "INSERT INTO users VALUES(null, '$email', '$name', '$url_avatar')";
     if(mysqli_query($connect, $query)){
-        echo "success";
+        $result = mysqli_query($connect,"SELECT `id` FROM `users` WHERE email='$email'" );
+        while($rows = $result->fetch_assoc()){
+            $idUser = $rows["id"];
+        }
+        echo $idUser;
     }
     else{
         echo "error @@@";
@@ -24,9 +29,9 @@ if($result->num_rows == 0){
 }
 else{
     while($rows = $result->fetch_assoc()){
-        $_SESSION["id_User"] = $rows["id"];
+        $idUser = $rows["id"];
     }
-    echo $_SESSION["id_User"];
+    echo $idUser;
 }
 
 $connect->close();
