@@ -1,4 +1,4 @@
-package com.example.naviapplication;
+package com.example.naviapplication.object;
 
 public class Article {
     public String title;

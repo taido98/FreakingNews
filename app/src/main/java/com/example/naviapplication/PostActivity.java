@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,6 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.naviapplication.object.Post;
+import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.PostAdapter;
 
 import org.json.JSONArray;
@@ -35,7 +38,8 @@ public class PostActivity extends AppCompatActivity{
     SwipeRefreshLayout containerPost;
     int width;
     Spinner category;
-    ip ip = new ip();
+    com.example.naviapplication.service.ip ip = new ip();
+    int idUser ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,10 @@ public class PostActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_post_actionbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = this.getIntent();
+        idUser = Integer.valueOf(intent.getStringExtra("idUser"));
+        Toast.makeText(this,""+idUser,Toast.LENGTH_LONG).show();
 
         listPost = (RecyclerView) findViewById(R.id.listPost);
 
@@ -76,6 +84,7 @@ public class PostActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PostActivity.this,AddPostActivity.class);
+                intent.putExtra("idUser",""+idUser);
                 PostActivity.this.startActivity(intent);
             }
         });
@@ -85,7 +94,7 @@ public class PostActivity extends AppCompatActivity{
         list.removeAll(list);
 //        Toast.makeText(PostActivity.this,type,Toast.LENGTH_LONG).show();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url+"?category="+type+"&idUser=1",null,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url+"?category="+type+"&idUser="+idUser,null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -95,7 +104,7 @@ public class PostActivity extends AppCompatActivity{
                                 ArrayList<String> listUrl = new ArrayList<>();
                                 JSONArray arrUrl = new JSONArray(jsonObject.getString("url_image"));
                                 for(int j = 0; j<arrUrl.length(); j++){
-                                    listUrl.add(arrUrl.getJSONObject(j).getString("url"));
+                                    listUrl.add(arrUrl.getJSONObject(j).getString("url").replaceAll("localhost",ip.getIp()));
                                 }
                                 int stt, v;
                                 if(jsonObject.getString("status").equals("null"))
@@ -119,7 +128,7 @@ public class PostActivity extends AppCompatActivity{
                                 e.printStackTrace();
                             }
                         }
-                        listPost.setAdapter(new PostAdapter(PostActivity.this,list,width));
+                        listPost.setAdapter(new PostAdapter(PostActivity.this,list,width,idUser));
                         listPost.setLayoutManager(new LinearLayoutManager(PostActivity.this, LinearLayoutManager.VERTICAL, false));
                     }
                 },

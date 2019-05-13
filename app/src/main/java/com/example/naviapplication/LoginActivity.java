@@ -1,11 +1,8 @@
 package com.example.naviapplication;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -23,8 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.naviapplication.service.ip;
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -37,10 +33,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -57,33 +51,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String name, email, url_avatar, id;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 001;
-    Button sign_out;
-    ip ip = new ip();
+    public final String SHARED_PREFERENCES_NAME = "DoUSer";
+    private Button sign_out;
+    private ip ip = new ip();
     String urlInsert ="http://"+ip.getIp()+"/FreakingNews/insert.php";
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUrl_avatar() {
-        return url_avatar;
-    }
-
-    public void setUrl_avatar(String url_avatar) {
-        this.url_avatar = url_avatar;
-    }
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -120,26 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//        if(accessToken == null){
-//            Toast.makeText(LoginActivity.this,"Sign in, Please ...", Toast.LENGTH_LONG).show();
-//        }
-//        else {
-//            Toast.makeText(LoginActivity.this,"Ok Ok :))))", Toast.LENGTH_LONG).show();
-//            loadUserProfile(accessToken);
-//        }
-//        new AccessTokenTracker() {
-//            @Override
-//            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-//                if(currentAccessToken == null){
-//                    Toast.makeText(LoginActivity.this,"Signed out", Toast.LENGTH_LONG).show();
-//                }
-//                else {
-//                    Toast.makeText(LoginActivity.this,"Signed in", Toast.LENGTH_LONG).show();
-//                    loadUserProfile(currentAccessToken);
-//                }
-//            }
-//        };
+
     }
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -189,7 +142,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             name=acct.getDisplayName();
             email = acct.getEmail();
             url_avatar= acct.getPhotoUrl().toString();
-            Log.d("@@@AAA"+url_avatar,"Loi!\n");
             addUser(urlInsert);
         }
     }
@@ -206,6 +158,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         intent.putExtra("name",name);
                         intent.putExtra("url",url_avatar);
                         intent.putExtra("idUser",response);
+
+                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("name", name);
+                        editor.putString("url", url_avatar);
+                        editor.putString("idUser" , response);
+                        editor.apply();
+
                         LoginActivity.this.startActivity(intent);
                         finish();
                     }

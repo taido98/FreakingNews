@@ -3,6 +3,7 @@ package com.example.naviapplication;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -43,6 +44,9 @@ import com.example.naviapplication.fagments.HomeFragment;
 import com.example.naviapplication.fagments.SavedNewsFragment;
 import com.example.naviapplication.fagments.SportFragment;
 import com.example.naviapplication.fagments.TechFragment;
+import com.example.naviapplication.object.Article;
+import com.example.naviapplication.service.XMLDOMParser;
+import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.CustomAdapter;
 
 import org.w3c.dom.Document;
@@ -68,8 +72,9 @@ public class MainActivity extends AppCompatActivity
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
     TextView c_name, c_email;
-    private String name, email, url_avatar, id, idUser = "haha";
-    ip ip = new ip();
+    private String name, email, url_avatar, id;
+    private String idUser;
+    com.example.naviapplication.service.ip ip = new ip();
     private String title_news, link_news;
     String urlSave ="http://"+ip.getIp()+"/FreakingNews/getSave.php";
 
@@ -99,26 +104,11 @@ public class MainActivity extends AppCompatActivity
         c_name = (TextView) headerView.findViewById(R.id.c_name);
         c_email = (TextView) headerView.findViewById(R.id.c_email);
 
-        Intent intent = this.getIntent();
-        email = intent.getStringExtra("email");
-        name = intent.getStringExtra("name");
-        url_avatar = intent.getStringExtra("url");
-        idUser = intent.getStringExtra("idUser");
-        Toast.makeText(this,"ID MainActivity: "+idUser,Toast.LENGTH_LONG).show();
-//        id = intent.getStringExtra("id");
-
-        if(name == null)
-            name = "AndroidStudio";
-        if(email == null)
-            email = "AndroidStudio@gmail.com";
-        if(url_avatar == null)
-            url_avatar = "https://upload.wikimedia.org/wikipedia/en/thumb/0/01/Gais.png/220px-Gais.png";
-        c_name.setText(name);
-        c_email.setText(email);
-        Glide.with(this).load(url_avatar).into(c_avatar);
-
-
-//        Toast.makeText(this,name+" is "+email+" is "+url_avatar,Toast.LENGTH_LONG).show();
+        SharedPreferences sharedPreferences = getSharedPreferences("DoUSer", MODE_PRIVATE);
+        c_name.setText(sharedPreferences.getString("name",""));
+        c_email.setText(sharedPreferences.getString("email" , ""));
+        Glide.with(this).load(sharedPreferences.getString("url","")).into(c_avatar);
+        idUser=sharedPreferences.getString("idUser","");
 
         articles = new ArrayList<Article>();
 
@@ -196,7 +186,7 @@ public class MainActivity extends AppCompatActivity
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+                    Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
                     intent.putExtra("link", articles.get(position).link);
                     startActivity(intent);
                 }
@@ -277,6 +267,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_story: {
                     articles.clear();
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
+                    intent.putExtra("idUser", idUser);
                     MainActivity.this.startActivity(intent);
                     break;
                 }
@@ -284,7 +275,6 @@ public class MainActivity extends AppCompatActivity
                     articles.clear();
                     Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
                     MainActivity.this.startActivity(intent2);
-
                     break;
                 }
             }
@@ -327,9 +317,9 @@ public class MainActivity extends AppCompatActivity
 //                params.put("usernameApp", txtEmail.getText().toString().trim());
 //                params.put("nameApp", txtName.getText().toString().trim());
 
-//                params.put("id_User", id_User);
-                params.put("title_news", "Title");
-                params.put("link_news", "Link");
+                params.put("idUser", idUser);
+                params.put("title_news", title_news);
+                params.put("link_news", link_news);
                 return params;
             }
         };

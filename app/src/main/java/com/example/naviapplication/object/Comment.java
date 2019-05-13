@@ -1,4 +1,4 @@
-package com.example.naviapplication;
+package com.example.naviapplication.object;
 
 public class Comment {
     private String name, content, url_avatar, date, id;

@@ -17,6 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.naviapplication.object.Comment;
+import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.CustomCommentAdapter;
 
 import org.json.JSONArray;
@@ -30,7 +32,7 @@ public class CommentActivity extends AppCompatActivity {
     ArrayList<Comment> list = new ArrayList<>();
     ListView listCmt;
     CustomCommentAdapter customCommentAdapter;
-    ip ip = new ip();
+    com.example.naviapplication.service.ip ip = new ip();
     int idPost, idUser;
 
     @Override

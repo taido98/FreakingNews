@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.naviapplication.Article;
+import com.example.naviapplication.object.Article;
 import com.example.naviapplication.R;
 import com.squareup.picasso.Picasso;
 

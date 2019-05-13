@@ -20,9 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.naviapplication.CommentActivity;
-import com.example.naviapplication.Post;
+import com.example.naviapplication.object.Post;
 import com.example.naviapplication.R;
-import com.example.naviapplication.ip;
+import com.example.naviapplication.service.ip;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,13 +32,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     private Context context;
     private LayoutInflater layoutInflater;
     private int width;
-    com.example.naviapplication.ip ip = new ip();
+    private int idUser;
+    com.example.naviapplication.service.ip ip = new ip();
 
-    public PostAdapter(Context context, ArrayList<Post> listPost, int width) {
+    public PostAdapter(Context context, ArrayList<Post> listPost, int width, int idUser) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.listPost = listPost;
         this.width = width;
+        this.idUser = idUser;
     }
 
     @NonNull
@@ -71,8 +73,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         holder.imagePost.setAdapter(new ImageAdapter(post.getListImage()));
         if(post.getListImage().size() == 1){
             holder.positionImage.setBackgroundColor(0x00000000);
+            holder.positionImage.setText("");
         }
         else {
+            holder.positionImage.setBackgroundResource(R.drawable.position);
             holder.positionImage.setText(1+holder.imagePost.getCurrentItem()+"/"+post.getListImage().size());
             holder.imagePost.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -91,20 +95,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             @Override
             public void onClick(View v) {
                 if (post.getStatus() == -1){
-                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),1);
+                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",post.getId(),1);
                     holder.downBtn.setImageResource(R.mipmap.vote_down);
                     holder.upBtn.setImageResource(R.mipmap.voted_up);
                     post.setStatus(1);
                     post.setVote(post.getVote()+2);
                 }
                 else if(post.getStatus() == 0){
-                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),1);
+                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",post.getId(),1);
                     holder.upBtn.setImageResource(R.mipmap.voted_up);
                     post.setStatus(1);
                     post.setVote(post.getVote()+1);
                 }
                 else {
-                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),0);
+                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",post.getId(),0);
                     holder.upBtn.setImageResource(R.mipmap.vote_up);
                     post.setStatus(0);
                     post.setVote(post.getVote()-1);
@@ -116,20 +120,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             @Override
             public void onClick(View v) {
                 if (post.getStatus() == 1){
-                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),-1);
+                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",post.getId(),-1);
                     holder.downBtn.setImageResource(R.mipmap.voted_down);
                     holder.upBtn.setImageResource(R.mipmap.vote_up);
                     post.setStatus(-1);
                     post.setVote(post.getVote()-2);
                 }
                 else if(post.getStatus() == 0){
-                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),-1);
+                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",post.getId(),-1);
                     holder.downBtn.setImageResource(R.mipmap.voted_down);
                     post.setStatus(-1);
                     post.setVote(post.getVote()-1);
                 }
                 else {
-                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",1,post.getId(),0);
+                    setStt("http://"+ip.getIp()+"/FreakingNews/setStatus.php",post.getId(),-1);
                     holder.downBtn.setImageResource(R.mipmap.vote_down);
                     post.setStatus(0);
                     post.setVote(post.getVote()+1);
@@ -142,7 +146,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
                 intent.putExtra("idPost", ""+post.getId());
-                intent.putExtra("idUser", "1");
+                intent.putExtra("idUser", ""+idUser);
                 context.startActivity(intent);
             }
         });
@@ -175,7 +179,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         
     }
 
-    private void setStt(String url, int idUser, int idPost, int setStatus){
+    private void setStt(String url, int idPost, int setStatus){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url+"?idUser="+idUser+"&idPost="+idPost+"&status="+setStatus,

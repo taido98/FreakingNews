@@ -49,7 +49,11 @@ public class ImageAdapter extends PagerAdapter {
         width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.item_image);
-        Picasso.get().load(listUrl.get(position)).resize(width,0).into(imageView);
+        Picasso.get()
+                .load(listUrl.get(position))
+                .resize(width,0)
+                .placeholder(R.mipmap.ic_icon)
+                .into(imageView);
 
         container.addView(view);
 

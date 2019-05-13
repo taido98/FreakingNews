@@ -15,9 +15,9 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.example.naviapplication.Article;
+import com.example.naviapplication.object.Article;
 import com.example.naviapplication.MainActivity;
-import com.example.naviapplication.SavedNewsAdapter;
+import com.example.naviapplication.util.SavedNewsAdapter;
 import com.example.naviapplication.R;
 
 import java.util.ArrayList;

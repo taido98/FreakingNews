@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.naviapplication.Comment;
+import com.example.naviapplication.object.Comment;
 import com.example.naviapplication.R;
 import com.squareup.picasso.Picasso;
 
@@ -18,6 +18,7 @@ public class CustomCommentAdapter extends BaseAdapter {
     private List<Comment> listComment;
     private Context context;
     private LayoutInflater inflater;
+
 
     public CustomCommentAdapter(List<Comment> listComment, Context context) {
         this.listComment = listComment;

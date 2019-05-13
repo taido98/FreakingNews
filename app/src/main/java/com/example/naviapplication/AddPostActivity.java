@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.RealPathUtil;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -38,7 +40,6 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +49,13 @@ public class AddPostActivity extends AppCompatActivity {
     private ImageView imageView, imagePin;
     private String PATH, imgName , im_url;
     private String imgCode, idTopic;
+    private int idUser;
     private Bitmap bitmap;
-    ip ip = new ip();
+    private ip ip = new ip();
     private Spinner category_post;
     private EditText input_post;
     private int REQUEST_GALLERY_IMAGE = 100;
+    private TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +66,14 @@ public class AddPostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_addpost_actionbar);
 
-
+        Intent intent = this.getIntent();
+        idUser = Integer.valueOf(intent.getStringExtra("idUser"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        im_url = "http://"+ip.getIp()+"/FreakingNews/upload/34689401_2147325555551794_7654281988110548992_n.jpg";
-        im_url = "http://sohanews.sohacdn.com/thumb_w/660/2018/8/28/photo1535416480861-15354164808651145995032.png";
-//        im_url = "https://scontent.fsgn2-3.fna.fbcdn.net/v/t1.0-9/58595586_2335381520025428_7214766066176622592_n.jpg?_nc_cat=108&_nc_oc=AQmkxqamW6GnIkygV8Hd9CHkvPMyTiTnrTJG_nXym340BAOyvm6cM1Y6w7nmnYGfz3U&_nc_ht=scontent.fsgn2-3.fna&oh=86463bbafdd68f9cda8a50e0da8f7370&oe=5D662368";
         imageView = findViewById(R.id.avatar_post);
         imagePin = (ImageView) findViewById(R.id.image_pin);
         category_post = (Spinner) findViewById(R.id.category_post);
         input_post = (EditText) findViewById(R.id.input_post);
+        name = (TextView) findViewById(R.id.name_post);
 
         category_post.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -89,7 +91,8 @@ public class AddPostActivity extends AppCompatActivity {
             }
         });
 
-        Picasso.get().load(im_url).into(imageView);
+//        Picasso.get().load(user.getUrl_avatar()).into(imageView);
+//        name.setText(user.getName());
 
         Button picker = (Button) findViewById(R.id.picker);
         picker.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +147,6 @@ public class AddPostActivity extends AppCompatActivity {
                 //Lấy dữ liệu dạng bitmap
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
                 imgCode = getBitMap(bitmap);
-                Toast.makeText(this,imgCode,Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }

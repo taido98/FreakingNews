@@ -1,4 +1,4 @@
-package com.example.naviapplication;
+package com.example.naviapplication.service;
 
 import android.util.Log;
 

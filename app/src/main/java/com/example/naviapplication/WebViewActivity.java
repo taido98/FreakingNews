@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class Main2Activity extends AppCompatActivity {
+public class WebViewActivity extends AppCompatActivity {
     WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
