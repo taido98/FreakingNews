@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         name = intent.getStringExtra("name");
         url_avatar = intent.getStringExtra("url");
         idUser = intent.getStringExtra("idUser");
-        Toast.makeText(this,idUser,Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"ID MainActivity: "+idUser,Toast.LENGTH_LONG).show();
 //        id = intent.getStringExtra("id");
 
         if(name == null)

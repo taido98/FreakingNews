@@ -61,6 +61,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ip ip = new ip();
     String urlInsert ="http://"+ip.getIp()+"/FreakingNews/insert.php";
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUrl_avatar() {
+        return url_avatar;
+    }
+
+    public void setUrl_avatar(String url_avatar) {
+        this.url_avatar = url_avatar;
+    }
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         intent.putExtra("url",url_avatar);
                         intent.putExtra("idUser",response);
                         LoginActivity.this.startActivity(intent);
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {
