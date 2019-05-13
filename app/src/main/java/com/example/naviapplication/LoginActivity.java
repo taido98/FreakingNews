@@ -61,13 +61,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ip ip = new ip();
     String urlInsert ="http://"+ip.getIp()+"/FreakingNews/insert.php";
 
-    public LoginActivity(String name, String email, String url_avatar, String id) {
-        this.name = name;
-        this.email = email;
-        this.url_avatar = url_avatar;
-        this.id = id;
-    }
-
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
