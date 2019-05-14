@@ -26,7 +26,7 @@
             }
         }
         echo json_encode($data);
-        echo '<script>console.log('.json_encode($data).')</script>';
+        // echo '<script>console.log('.json_encode($data).')</script>';
     }
     // echo '<script>console.log('.$category.')</script>';
 
