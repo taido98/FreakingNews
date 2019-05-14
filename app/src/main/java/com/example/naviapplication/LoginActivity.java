@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -62,6 +63,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -222,5 +226,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home : onBackPressed();
+                return true;
+            default:break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,MainActivity.class);
+        this.startActivity(intent);
+        finish();
+    }
 }
