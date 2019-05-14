@@ -72,8 +72,6 @@ public class AddPostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = this.getIntent();
-        idUser = Integer.valueOf(intent.getStringExtra("idUser"));
-
 
         imageView = findViewById(R.id.avatar_post);
         imagePin = (ImageView) findViewById(R.id.image_pin);
@@ -82,6 +80,7 @@ public class AddPostActivity extends AppCompatActivity {
         name = (TextView) findViewById(R.id.name_post);
 
         User user = new User(this);
+        idUser = user.getId();
 
         category_post.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -203,7 +202,7 @@ public class AddPostActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("imageName",imgName);
                 params.put("imageCode",imgCode);
-                params.put("idUser","1");
+                params.put("idUser",""+idUser);
                 params.put("idTopic",idTopic);
                 params.put("content",input_post.getText().toString());
 

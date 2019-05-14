@@ -269,12 +269,14 @@ public class MainActivity extends AppCompatActivity
                     articles.clear();
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
                     MainActivity.this.startActivity(intent);
+                    finish();
                     break;
                 }
                 case R.id.nav_auth: {
                     articles.clear();
                     Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
                     MainActivity.this.startActivity(intent2);
+                    finish();
                     break;
                 }
             }
