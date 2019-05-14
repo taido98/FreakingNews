@@ -2,6 +2,7 @@ package com.example.naviapplication;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -28,6 +29,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.RealPathUtil;
 import com.karumi.dexter.Dexter;
@@ -56,6 +59,7 @@ public class AddPostActivity extends AppCompatActivity {
     private EditText input_post;
     private int REQUEST_GALLERY_IMAGE = 100;
     private TextView name;
+    String urlAddPost = "http://"+ip.getIp()+"/FreakingNews/newPost.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +69,19 @@ public class AddPostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_addpost_actionbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = this.getIntent();
         idUser = Integer.valueOf(intent.getStringExtra("idUser"));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         imageView = findViewById(R.id.avatar_post);
         imagePin = (ImageView) findViewById(R.id.image_pin);
         category_post = (Spinner) findViewById(R.id.category_post);
         input_post = (EditText) findViewById(R.id.input_post);
         name = (TextView) findViewById(R.id.name_post);
+
+        User user = new User(this);
 
         category_post.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -91,8 +99,8 @@ public class AddPostActivity extends AppCompatActivity {
             }
         });
 
-//        Picasso.get().load(user.getUrl_avatar()).into(imageView);
-//        name.setText(user.getName());
+        Glide.with(this).load(user.getUrl_avatar()).into(imageView);
+        name.setText(user.getName());
 
         Button picker = (Button) findViewById(R.id.picker);
         picker.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +115,7 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AddPostActivity.this.startActivity(new Intent(AddPostActivity.this,PostActivity.class));
-                upload("http://"+ip.getIp()+"/FreakingNews/newPost.php");
+                upload(urlAddPost);
             }
         });
     }

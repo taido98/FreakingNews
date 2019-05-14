@@ -32,8 +32,9 @@ public class CommentActivity extends AppCompatActivity {
     ArrayList<Comment> list = new ArrayList<>();
     ListView listCmt;
     CustomCommentAdapter customCommentAdapter;
-    com.example.naviapplication.service.ip ip = new ip();
+    ip ip = new ip();
     int idPost, idUser;
+    String urlComment = "http://"+ip.getIp()+"/FreakingNews/getCmt.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class CommentActivity extends AppCompatActivity {
 
         listCmt = (ListView) findViewById(R.id.listComment);
 
-        loadCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php");
+        loadCmt(urlComment);
 
         Button submit = findViewById(R.id.submit_cmt);
 
@@ -55,7 +56,7 @@ public class CommentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText input = (EditText) findViewById(R.id.inputCmt) ;
                 Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
-                addCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php",input.getText().toString().trim());
+                addCmt(urlComment,input.getText().toString().trim());
                 input.setText("");
             }
         });
@@ -108,7 +109,7 @@ public class CommentActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if(response.trim().equals("Success")){
                             Toast.makeText(CommentActivity.this,"Comment thành công"+idUser,Toast.LENGTH_LONG).show();
-                            loadCmt("http://"+ip.getIp()+"/FreakingNews/getCmt.php");
+                            loadCmt(urlComment);
                         }
                         else
                             Toast.makeText(CommentActivity.this,response,Toast.LENGTH_LONG).show();

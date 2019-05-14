@@ -40,6 +40,7 @@ public class PostActivity extends AppCompatActivity{
     Spinner category;
     com.example.naviapplication.service.ip ip = new ip();
     int idUser ;
+    String urlPost = "http://"+ip.getIp()+"/FreakingNews/getPost.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +64,11 @@ public class PostActivity extends AppCompatActivity{
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                loadPost("http://"+ip.getIp()+"/FreakingNews/getPost.php", category.getSelectedItem().toString());
+                loadPost(urlPost, category.getSelectedItem().toString());
                 containerPost.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        loadPost("http://"+ip.getIp()+"/FreakingNews/getPost.php", category.getSelectedItem().toString());
+//                        loadPost(urlPost, category.getSelectedItem().toString());
                         containerPost.setRefreshing(false);
                     }
                 });

@@ -45,6 +45,7 @@ import com.example.naviapplication.fagments.SavedNewsFragment;
 import com.example.naviapplication.fagments.SportFragment;
 import com.example.naviapplication.fagments.TechFragment;
 import com.example.naviapplication.object.Article;
+import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.XMLDOMParser;
 import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.CustomAdapter;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity
     TextView c_name, c_email;
     private String name, email, url_avatar, id;
     private String idUser;
-    com.example.naviapplication.service.ip ip = new ip();
+    ip ip = new ip();
     private String title_news, link_news;
     String urlSave ="http://"+ip.getIp()+"/FreakingNews/getSave.php";
 
@@ -104,11 +105,12 @@ public class MainActivity extends AppCompatActivity
         c_name = (TextView) headerView.findViewById(R.id.c_name);
         c_email = (TextView) headerView.findViewById(R.id.c_email);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("DoUSer", MODE_PRIVATE);
-        c_name.setText(sharedPreferences.getString("name",""));
-        c_email.setText(sharedPreferences.getString("email" , ""));
-        Glide.with(this).load(sharedPreferences.getString("url","")).into(c_avatar);
-        idUser=sharedPreferences.getString("idUser","");
+
+        User user = new User(this);
+        c_name.setText(user.getName());
+        c_email.setText(user.getEmail());
+        Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
+        idUser=""+user.getId();
 
         articles = new ArrayList<Article>();
 
