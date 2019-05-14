@@ -106,10 +106,17 @@ public class MainActivity extends AppCompatActivity
         c_email = (TextView) headerView.findViewById(R.id.c_email);
 
         User user = new User(this);
-        c_name.setText(user.getName());
-        c_email.setText(user.getEmail());
-        Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
         idUser=user.getId();
+        if(user.getEmail().equals("null")){
+            c_name.setText("Freaking News");
+            c_email.setText("Freakingnews@freakingnews.com");
+            c_avatar.setImageResource(R.mipmap.ic_icon_round);
+        }
+        else{
+            c_name.setText(user.getName());
+            c_email.setText(user.getEmail());
+            Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
+        }
 
         articles = new ArrayList<Article>();
 

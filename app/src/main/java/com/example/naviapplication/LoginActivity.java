@@ -158,10 +158,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onResponse(String response) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("email",email);
-                        intent.putExtra("name",name);
-                        intent.putExtra("url",url_avatar);
-                        intent.putExtra("idUser",response);
 
                         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();

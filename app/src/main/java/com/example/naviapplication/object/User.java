@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.naviapplication.R;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class User {
@@ -12,10 +14,10 @@ public class User {
 
     public User(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("DoUSer", MODE_PRIVATE);
-        this.name = sharedPreferences.getString("name","");
-        this.email = sharedPreferences.getString("email" , "");
-        this.url_avatar = sharedPreferences.getString("url","");
-        this.id = Integer.valueOf(sharedPreferences.getString("idUser",""));
+        this.name = sharedPreferences.getString("name","null");
+        this.email = sharedPreferences.getString("email" , "null");
+        this.url_avatar = sharedPreferences.getString("url","null");
+        this.id = Integer.valueOf(sharedPreferences.getString("idUser","0"));
     }
 
     public String getName() {
