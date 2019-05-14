@@ -3,6 +3,7 @@ package com.example.naviapplication;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -48,6 +49,9 @@ import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.XMLDOMParser;
 import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.CustomAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity
     private int idUser;
     ip ip = new ip();
     private String title_news, link_news;
+    private GoogleSignInClient mGoogleSignInClient;
     String urlSave ="http://"+ip.getIp()+"/FreakingNews/getSave.php";
 
     @SuppressLint("SetTextI18n")
@@ -114,7 +119,14 @@ public class MainActivity extends AppCompatActivity
         else{
             c_name.setText(user.getName());
             c_email.setText(user.getEmail());
-            Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
+            if(user.getUrl_avatar().equals("")){
+//                Toast.makeText(MainActivity.this, user.getUrl_avatar(), Toast.LENGTH_SHORT).show();
+                c_avatar.setImageResource(R.mipmap.ic_icon_round);
+            }
+            else{
+
+                Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
+            }
         }
 
         articles = new ArrayList<Article>();
@@ -171,7 +183,7 @@ public class MainActivity extends AppCompatActivity
                     switch (index) {
                         case 0:
                             //khi click vào nút share, gọi hàm shareIt() để share
-                            Toast.makeText(MainActivity.this, articles.get(position).title, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, articles.get(position).image, Toast.LENGTH_LONG).show();
                             shareIt(articles.get(position));
                             break;
                         case 1:
@@ -206,6 +218,20 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+    //    dang xuat
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+
+
+                    }
+                });
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -279,11 +305,26 @@ public class MainActivity extends AppCompatActivity
                     break;
                 }
                 case R.id.nav_auth: {
-                    articles.clear();
-                    Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
-                    MainActivity.this.startActivity(intent2);
-                    finish();
-                    break;
+//                    User user = new User(this);
+                    if(c_email.getText()=="Freakingnews@freakingnews.com"){
+                        articles.clear();
+                        Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
+                        MainActivity.this.startActivity(intent2);
+                        finish();
+                        break;
+                    }
+                    else {
+//                        articles.clear();
+                        SharedPreferences sharedPreferences = getSharedPreferences("DoUSer", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.apply();
+                        finish();
+                        startActivity(getIntent());
+//                        finish();
+                        break;
+                    }
+
                 }
             }
         }
@@ -299,7 +340,7 @@ public class MainActivity extends AppCompatActivity
         return activeNetwork != null && activeNetwork.isConnected();
     }
 
-//    luu tin
+    //    luu tin
     private void addSave(String url){
 //        Toast.makeText(MainActivity.this, title_news, Toast.LENGTH_LONG).show();
         RequestQueue requestQueue = Volley.newRequestQueue(this);

@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+//        SharedPreferences sharedPreferences = getSharedPreferences("DoUSer", MODE_PRIVATE);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.gg_login).setOnClickListener(this);
         findViewById(R.id.sign_out).setOnClickListener(this);
         callbackManager = CallbackManager.Factory.create();
-
         fb_login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -85,12 +84,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onCancel() {
-                Toast.makeText(LoginActivity.this,"Login Cancel",Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this,"Login Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Login Error", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -103,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
-//lay ket qua fb,gg
+    //lay ket qua fb,gg
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -145,7 +144,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GoogleSignInAccount acct = completedTask.getResult();
             name=acct.getDisplayName();
             email = acct.getEmail();
-            url_avatar= acct.getPhotoUrl().toString();
+            url_avatar= acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "";
+//            Toast.makeText(LoginActivity.this,url_avatar, Toast.LENGTH_LONG).show();
             addUser(urlInsert);
         }
     }
@@ -157,6 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+//                        Toast.makeText(LoginActivity.this,"addUSer@@", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
                         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE);
@@ -174,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("AAA","Loi!\n"+error.toString());
+                        Toast.makeText(LoginActivity.this,"@@@???", Toast.LENGTH_LONG).show();
                     }
                 }
         ){
@@ -197,14 +198,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // ...
-                        name=null;
-                        email=null;
-                        url_avatar =null;
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("email",email);
-                        intent.putExtra("name",name);
-                        intent.putExtra("url",url_avatar);
-                        LoginActivity.this.startActivity(intent);
+                        SharedPreferences sharedPreferences = getSharedPreferences("DoUSer", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.apply();
                     }
                 });
     }
