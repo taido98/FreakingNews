@@ -57,11 +57,10 @@ public class AddPostActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private LinearLayout imagePick;
-    private String PATH, im_url;
     private ArrayList<String> imgName, imgCode ;
     private String idTopic;
     private int idUser;
-    private Bitmap bitmap;
+    private ArrayList<Uri> uri;
     private ip ip = new ip();
     private Spinner category_post;
     private EditText input_post;
@@ -157,55 +156,43 @@ public class AddPostActivity extends AppCompatActivity {
             // When an Image is picked
             if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK
                     && null != data) {
-                // Get the Image from data
-
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                imgCode = new ArrayList<>();
                 imgName = new ArrayList<>();
+                uri = new ArrayList<>();
                 if(data.getData()!=null){
-                    Uri mImageUri=data.getData();
-                    PATH = RealPathUtil.getRealPath(this, mImageUri);
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
+                    String PATH = RealPathUtil.getRealPath(AddPostActivity.this, data.getData());
+                    Uri mImageUri= Uri.fromFile(new File(PATH));
+                    uri.add(mImageUri);
                     //Get name
                     imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
                     ImageView image = new ImageView(this);
-                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(300, 300));
-                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    image.setImageBitmap(bitmap);
+                    Glide.with(this).load(mImageUri).override(300,300).centerCrop().into(image);
                     imagePick.addView(image);
-                    imgCode.add(getBitMap(bitmap));
-
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
                         for (int i = 0; i < mClipData.getItemCount(); i++) {
-
                             ClipData.Item item = mClipData.getItemAt(i);
-                            Uri uri = item.getUri();
-
-                            PATH = RealPathUtil.getRealPath(this, uri);
-                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                            String PATH = RealPathUtil.getRealPath(AddPostActivity.this, item.getUri());
+                            Uri mImageUri = Uri.fromFile(new File(PATH));
+                            uri.add(mImageUri);
+//                            bitmap.add(MediaStore.Images.Media.getBitmap(getContentResolver(), uri));
                             //Get name
                             imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
                             ImageView image = new ImageView(this);
-                            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(300, 300));
-                            image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                            image.setImageBitmap(bitmap);
+                            Glide.with(this).load(mImageUri).override(300,300).centerCrop().into(image);
                             imagePick.addView(image);
-                            imgCode.add(getBitMap(bitmap));
                         }
                     }
                 }
-                Log.d("REQUEST", toJson(imgName,imgCode));
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+            Toast.makeText(this, "Something went wrong"+e.toString(), Toast.LENGTH_LONG)
                     .show();
         }
-
+//        Toast.makeText(this,imgName)
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -216,17 +203,6 @@ public class AddPostActivity extends AppCompatActivity {
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
-    }
-
-    public String toJson(ArrayList<String> name, ArrayList<String> code){
-        String jsonString = "";
-
-        for (int i = 0; i < name.size(); i++){
-            jsonString += "{\"name\":\""+name.get(i)+"\",\"code\":\""
-                    +code.get(i)+"\"},";
-        }
-        jsonString = jsonString.substring(0,jsonString.length()-1);
-        return "["+jsonString+"]";
     }
 
     //Function upload post to server
@@ -250,11 +226,16 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-//                params.put("jsonCode",toJson(imgName,imgCode));
-                params.put("size",""+imgCode.size());
+                imgCode = new ArrayList<>();
+                params.put("size",""+imgName.size());
                 for(int i = 0; i < imgName.size(); i++){
-                    params.put("imgName"+i,imgName.get(i));
-                    params.put("imgCode"+i,imgCode.get(i));
+                    try {
+                        imgCode.add(getBitMap(MediaStore.Images.Media.getBitmap(getContentResolver(), uri.get(i))));
+                        params.put("imgName"+i,imgName.get(i));
+                        params.put("imgCode"+i,imgCode.get(i));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 params.put("idUser",""+idUser);
                 params.put("idTopic",idTopic);
