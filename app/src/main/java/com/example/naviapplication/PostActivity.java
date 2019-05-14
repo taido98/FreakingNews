@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.naviapplication.object.Post;
+import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.PostAdapter;
 
@@ -38,7 +39,7 @@ public class PostActivity extends AppCompatActivity{
     SwipeRefreshLayout containerPost;
     int width;
     Spinner category;
-    com.example.naviapplication.service.ip ip = new ip();
+    ip ip = new ip();
     int idUser ;
     String urlPost = "http://"+ip.getIp()+"/FreakingNews/getPost.php";
 
@@ -52,7 +53,8 @@ public class PostActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = this.getIntent();
-        idUser = Integer.valueOf(intent.getStringExtra("idUser"));
+        User user = new User(this);
+        idUser = user.getId();
         Toast.makeText(this,""+idUser,Toast.LENGTH_LONG).show();
 
         listPost = (RecyclerView) findViewById(R.id.listPost);
@@ -85,7 +87,6 @@ public class PostActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PostActivity.this,AddPostActivity.class);
-                intent.putExtra("idUser",""+idUser);
                 PostActivity.this.startActivity(intent);
             }
         });
@@ -129,7 +130,7 @@ public class PostActivity extends AppCompatActivity{
                                 e.printStackTrace();
                             }
                         }
-                        listPost.setAdapter(new PostAdapter(PostActivity.this,list,width,idUser));
+                        listPost.setAdapter(new PostAdapter(PostActivity.this,list));
                         listPost.setLayoutManager(new LinearLayoutManager(PostActivity.this, LinearLayoutManager.VERTICAL, false));
                     }
                 },

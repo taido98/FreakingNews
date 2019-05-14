@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.naviapplication.object.Comment;
+import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.CustomCommentAdapter;
 
@@ -43,7 +44,9 @@ public class CommentActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent();
         idPost = Integer.valueOf(intent.getStringExtra("idPost"));
-        idUser = Integer.valueOf(intent.getStringExtra("idUser"));
+
+        User user = new User(this);
+        idUser = user.getId();
 
         listCmt = (ListView) findViewById(R.id.listComment);
 

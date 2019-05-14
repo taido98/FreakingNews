@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
     TextView c_name, c_email;
-    private String name, email, url_avatar, id;
-    private String idUser;
+    private String name, email, url_avatar;
+    private int idUser;
     ip ip = new ip();
     private String title_news, link_news;
     String urlSave ="http://"+ip.getIp()+"/FreakingNews/getSave.php";
@@ -105,12 +105,11 @@ public class MainActivity extends AppCompatActivity
         c_name = (TextView) headerView.findViewById(R.id.c_name);
         c_email = (TextView) headerView.findViewById(R.id.c_email);
 
-
         User user = new User(this);
         c_name.setText(user.getName());
         c_email.setText(user.getEmail());
         Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
-        idUser=""+user.getId();
+        idUser=user.getId();
 
         articles = new ArrayList<Article>();
 
@@ -269,7 +268,6 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_story: {
                     articles.clear();
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
-                    intent.putExtra("idUser", idUser);
                     MainActivity.this.startActivity(intent);
                     break;
                 }
@@ -319,7 +317,7 @@ public class MainActivity extends AppCompatActivity
 //                params.put("usernameApp", txtEmail.getText().toString().trim());
 //                params.put("nameApp", txtName.getText().toString().trim());
 
-                params.put("idUser", idUser);
+                params.put("idUser", ""+idUser);
                 params.put("title_news", title_news);
                 params.put("link_news", link_news);
                 return params;

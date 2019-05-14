@@ -22,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.naviapplication.CommentActivity;
 import com.example.naviapplication.object.Post;
 import com.example.naviapplication.R;
+import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.ip;
 import com.squareup.picasso.Picasso;
 
@@ -31,16 +32,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     private ArrayList<Post> listPost;
     private Context context;
     private LayoutInflater layoutInflater;
-    private int width;
     private int idUser;
-    com.example.naviapplication.service.ip ip = new ip();
+    private ip ip = new ip();
+    private User user;
 
-    public PostAdapter(Context context, ArrayList<Post> listPost, int width, int idUser) {
+    public PostAdapter(Context context, ArrayList<Post> listPost) {
         this.context = context;
+        user = new User(context);
         layoutInflater = LayoutInflater.from(context);
         this.listPost = listPost;
-        this.width = width;
-        this.idUser = idUser;
+        this.idUser = user.getId();
     }
 
     @NonNull
@@ -146,7 +147,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(context, CommentActivity.class);
                 intent.putExtra("idPost", ""+post.getId());
-                intent.putExtra("idUser", ""+idUser);
                 context.startActivity(intent);
             }
         });
