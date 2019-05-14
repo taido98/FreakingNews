@@ -44,12 +44,10 @@ dependencies {
 
     //Butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //dexter permissions
     implementation "com.karumi:dexter:5.0.0"
 
-    //image loader
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }
 apply plugin: 'com.google.gms.google-services'

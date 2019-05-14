@@ -48,12 +48,13 @@ public class ImageAdapter extends PagerAdapter {
         ((Activity)container.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         width = Math.round(displayMetrics.widthPixels - 10 * displayMetrics.density);
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.item_image);
+        ImageView imageItem = (ImageView) view.findViewById(R.id.item_image);
+        ImageView deleteBtn = (ImageView) view.findViewById(R.id.deleteButton);
+        deleteBtn.setImageResource(R.color.transparent);
         Picasso.get()
                 .load(listUrl.get(position))
                 .resize(width,0)
-                .placeholder(R.mipmap.ic_icon)
-                .into(imageView);
+                .into(imageItem);
 
         container.addView(view);
 

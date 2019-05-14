@@ -14,13 +14,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CustomCommentAdapter extends BaseAdapter {
+public class CommentAdapter extends BaseAdapter {
     private List<Comment> listComment;
     private Context context;
     private LayoutInflater inflater;
 
 
-    public CustomCommentAdapter(List<Comment> listComment, Context context) {
+    public CommentAdapter(List<Comment> listComment, Context context) {
         this.listComment = listComment;
         this.context = context;
         inflater = LayoutInflater.from(context);

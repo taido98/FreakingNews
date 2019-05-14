@@ -1,4 +1,4 @@
-package com.example.naviapplication.fagments;
+package com.example.naviapplication.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.naviapplication.R;
 
-public class TechFragment extends Fragment {
+public class BusinessFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

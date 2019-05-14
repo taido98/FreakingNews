@@ -20,7 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.naviapplication.object.Comment;
 import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.ip;
-import com.example.naviapplication.util.CustomCommentAdapter;
+import com.example.naviapplication.util.CommentAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +32,7 @@ public class CommentActivity extends AppCompatActivity {
 
     ArrayList<Comment> list = new ArrayList<>();
     ListView listCmt;
-    CustomCommentAdapter customCommentAdapter;
+    CommentAdapter commentAdapter;
     ip ip = new ip();
     int idPost, idUser;
     String urlComment = "http://"+ip.getIp()+"/FreakingNews/getCmt.php";
@@ -89,8 +89,8 @@ public class CommentActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        customCommentAdapter = new CustomCommentAdapter(list,CommentActivity.this);
-                        listCmt.setAdapter(customCommentAdapter);
+                        commentAdapter = new CommentAdapter(list,CommentActivity.this);
+                        listCmt.setAdapter(commentAdapter);
                         Toast.makeText(CommentActivity.this,"Load thanh cong",Toast.LENGTH_LONG).show();
                     }
                 },

@@ -1,11 +1,15 @@
 package com.example.naviapplication;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,15 +48,18 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AddPostActivity extends AppCompatActivity {
 
-    private ImageView imageView, imagePin;
-    private String PATH, imgName , im_url;
-    private String imgCode, idTopic;
+    private ImageView imageView;
+    private LinearLayout imagePick;
+    private String PATH, im_url;
+    private ArrayList<String> imgName, imgCode ;
+    private String idTopic;
     private int idUser;
     private Bitmap bitmap;
     private ip ip = new ip();
@@ -74,7 +82,7 @@ public class AddPostActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
 
         imageView = findViewById(R.id.avatar_post);
-        imagePin = (ImageView) findViewById(R.id.image_pin);
+        imagePick = (LinearLayout) findViewById(R.id.imagePick);
         category_post = (Spinner) findViewById(R.id.category_post);
         input_post = (EditText) findViewById(R.id.input_post);
         name = (TextView) findViewById(R.id.name_post);
@@ -121,14 +129,16 @@ public class AddPostActivity extends AppCompatActivity {
 
     protected void onGallerySelected(){
         Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(pickPhoto, REQUEST_GALLERY_IMAGE);
+                            Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent,"Select Picture"), REQUEST_GALLERY_IMAGE);
                         }
                     }
 
@@ -139,35 +149,64 @@ public class AddPostActivity extends AppCompatActivity {
                 }).check();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK ) {
-            PATH = RealPathUtil.getRealPath(this, data.getData());
-            Uri uri = Uri.fromFile(new File(PATH));
+        try {
+            // When an Image is picked
+            if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
 
-            // Get name
-            imgName = PATH.substring(PATH.lastIndexOf("/")+1);
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                imgCode = new ArrayList<>();
+                imgName = new ArrayList<>();
+                if(data.getData()!=null){
+                    Uri mImageUri=data.getData();
+                    PATH = RealPathUtil.getRealPath(this, mImageUri);
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
+                    //Get name
+                    imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
+                    ImageView image = new ImageView(this);
+                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(300, 300));
+                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    image.setImageBitmap(bitmap);
+                    imagePick.addView(image);
+                    imgCode.add(getBitMap(bitmap));
 
-            try {
-                //Lấy dữ liệu dạng bitmap
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                imgCode = getBitMap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+                } else {
+                    if (data.getClipData() != null) {
+                        ClipData mClipData = data.getClipData();
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+
+                            PATH = RealPathUtil.getRealPath(this, uri);
+                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                            //Get name
+                            imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
+                            ImageView image = new ImageView(this);
+                            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(300, 300));
+                            image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            image.setImageBitmap(bitmap);
+                            imagePick.addView(image);
+                            imgCode.add(getBitMap(bitmap));
+                        }
+                    }
+                }
+                Log.d("REQUEST", toJson(imgName,imgCode));
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
             }
-
-
-            //Trả về độ rộng của màn hình
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int width = displayMetrics.widthPixels;
-
-            //Load ảnh vào imageView
-            Picasso.get().load(data.getData()).resize(width,0).into(imagePin);
-//            Toast.makeText(this, data.getData().toString(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // Encode bitmap to String
@@ -177,6 +216,17 @@ public class AddPostActivity extends AppCompatActivity {
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+
+    public String toJson(ArrayList<String> name, ArrayList<String> code){
+        String jsonString = "";
+
+        for (int i = 0; i < name.size(); i++){
+            jsonString += "{\"name\":\""+name.get(i)+"\",\"code\":\""
+                    +code.get(i)+"\"},";
+        }
+        jsonString = jsonString.substring(0,jsonString.length()-1);
+        return "["+jsonString+"]";
     }
 
     //Function upload post to server
@@ -200,8 +250,12 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("imageName",imgName);
-                params.put("imageCode",imgCode);
+//                params.put("jsonCode",toJson(imgName,imgCode));
+                params.put("size",""+imgCode.size());
+                for(int i = 0; i < imgName.size(); i++){
+                    params.put("imgName"+i,imgName.get(i));
+                    params.put("imgCode"+i,imgCode.get(i));
+                }
                 params.put("idUser",""+idUser);
                 params.put("idTopic",idTopic);
                 params.put("content",input_post.getText().toString());

@@ -1,4 +1,4 @@
-package com.example.naviapplication.fagments;
+package com.example.naviapplication.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

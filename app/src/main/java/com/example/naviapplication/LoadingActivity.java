@@ -9,15 +9,13 @@ public class LoadingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
 
         Thread welcomeThread = new Thread() {
-
             @Override
             public void run() {
                 try {
                     super.run();
-                    sleep(1500);
+                    sleep(3000);
                 } catch (Exception e) {
 
                 } finally {

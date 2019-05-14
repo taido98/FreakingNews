@@ -1,4 +1,4 @@
-package com.example.naviapplication.fagments;
+package com.example.naviapplication.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 import com.example.naviapplication.R;
 
-public class ErrorFragment extends Fragment {
+public class SportFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.error_layout, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }
