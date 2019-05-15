@@ -2,6 +2,7 @@ package com.example.naviapplication.util;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class SavedNewsAdapter extends ArrayAdapter<ArticleSave> {
         if (p != null) {
             // Anh xa + Gan gia tri
             TextView txtTitle = (TextView) view.findViewById(R.id.savedTitle);
-            txtTitle.setText(p.title);
+            txtTitle.setText(Html.fromHtml(Html.fromHtml(p.title).toString()));
 //            TextView txtPubDate = (TextView) view.findViewById(R.id.savedPubDate);
 //            txtPubDate.setText(p.pubDate);
             ImageView imageView = (ImageView) view.findViewById(R.id.savedIamge);
