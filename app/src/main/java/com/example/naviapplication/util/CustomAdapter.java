@@ -49,7 +49,7 @@ public class CustomAdapter extends ArrayAdapter<Article> {
 
     private String parseDate(String time) {
         String inputPattern = "EEE, d MMM yyyy HH:mm:ss Z";
-        String outputPattern = "dd-MM-yyyy h:mm a";
+        String outputPattern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.US);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.US);
 
@@ -62,6 +62,7 @@ public class CustomAdapter extends ArrayAdapter<Article> {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return str;
+        SetDate setDate = new SetDate(str);
+        return setDate.getDate();
     }
 }

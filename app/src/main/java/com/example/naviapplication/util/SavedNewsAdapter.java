@@ -31,16 +31,16 @@ public class SavedNewsAdapter extends ArrayAdapter<ArticleSave> {
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            view =  inflater.inflate(R.layout.saved_item, null);
+            view =  inflater.inflate(R.layout.fragment_home, null);
         }
         ArticleSave p = getItem(position);
         if (p != null) {
             // Anh xa + Gan gia tri
-            TextView txtTitle = (TextView) view.findViewById(R.id.savedTitle);
+            TextView txtTitle = (TextView) view.findViewById(R.id.textViewTitle);
             txtTitle.setText(Html.fromHtml(Html.fromHtml(p.title).toString()));
 //            TextView txtPubDate = (TextView) view.findViewById(R.id.savedPubDate);
-//            txtPubDate.setText(p.pubDate);
-            ImageView imageView = (ImageView) view.findViewById(R.id.savedIamge);
+//            txtPubDate.setText(parseDate(p.pubDate));
+            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
             Picasso.get().load(p.image).into(imageView);
         }
         return view;
