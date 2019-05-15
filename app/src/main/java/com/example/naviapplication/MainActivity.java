@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -78,7 +80,8 @@ public class MainActivity extends AppCompatActivity
     CustomAdapter customAdapter;
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
-    TextView c_name, c_email, auth;
+    TextView c_name, c_email;
+    MenuItem nav_auth;
     private int idUser;
     ip ip = new ip();
     private String title_news, link_news;
@@ -105,6 +108,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
 
+        Menu menu = navigationView.getMenu();
+
+        nav_auth = menu.findItem(R.id.nav_auth);
+
         listView = (SwipeMenuListView) findViewById(R.id.listView);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -122,9 +129,11 @@ public class MainActivity extends AppCompatActivity
         c_email.setText(user.getEmail());
         if(user.getUrl_avatar().equals("null")){
             c_avatar.setImageResource(R.mipmap.ic_launcher_round);
+            nav_auth.setTitle("Đăng nhập/Đăng ký");
         }
         else{
             Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
+            nav_auth.setTitle("Đăng xuất");
         }
 
         articles = new ArrayList<Article>();
@@ -315,9 +324,11 @@ public class MainActivity extends AppCompatActivity
                         editor.apply();
                         signOut();
                         AccessToken.setCurrentAccessToken(null);
+                        user = new User(this);
                         c_name.setText(user.getName());
                         c_email.setText(user.getEmail());
                         c_avatar.setImageResource(R.mipmap.ic_launcher_round);
+                        nav_auth.setTitle("Đăng nhập/Đăng ký");
                         break;
                     }
 
