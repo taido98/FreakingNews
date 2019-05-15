@@ -37,6 +37,7 @@ public class PostActivity extends AppCompatActivity{
     ArrayList<Post> list = new ArrayList<>();
     RecyclerView listPost;
     SwipeRefreshLayout containerPost;
+    PostAdapter postAdapter;
     int width;
     Spinner category;
     ip ip = new ip();
@@ -58,6 +59,9 @@ public class PostActivity extends AppCompatActivity{
         Toast.makeText(this,""+idUser,Toast.LENGTH_LONG).show();
 
         listPost = (RecyclerView) findViewById(R.id.listPost);
+        postAdapter = new PostAdapter(PostActivity.this,list);
+        listPost.setAdapter(postAdapter);
+        listPost.setLayoutManager(new LinearLayoutManager(PostActivity.this, LinearLayoutManager.VERTICAL, false));
 
         containerPost = (SwipeRefreshLayout) findViewById(R.id.containerPost);
 
@@ -129,9 +133,8 @@ public class PostActivity extends AppCompatActivity{
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            postAdapter.notifyDataSetChanged();
                         }
-                        listPost.setAdapter(new PostAdapter(PostActivity.this,list));
-                        listPost.setLayoutManager(new LinearLayoutManager(PostActivity.this, LinearLayoutManager.VERTICAL, false));
                     }
                 },
                 new Response.ErrorListener() {

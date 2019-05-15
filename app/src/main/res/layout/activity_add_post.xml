@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     tools:context=".AddPostActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="fill_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avatar_post"
@@ -41,6 +41,8 @@
             android:layout_marginStart="4dp"
             android:background="@drawable/category"
             android:entries="@array/category_arrays"
+            android:gravity="center"
+            android:spinnerMode="dropdown"
             app:layout_constraintBottom_toBottomOf="@+id/category_prompt"
             app:layout_constraintStart_toEndOf="@+id/category_prompt"
             app:layout_constraintTop_toTopOf="@+id/category_prompt" />
@@ -52,7 +54,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:text="Chuyên mục:"
+            android:text="Chuyên mụccc:"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/avatar_post"
             app:layout_constraintTop_toBottomOf="@+id/name_post" />
@@ -77,20 +79,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/avatar_post" />
 
-        <Button
-            android:id="@+id/picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Pick Image"
-            android:textColor="#000000"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_post" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/imageAddPost"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="400px"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -98,7 +90,24 @@
             android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/picker" />
+            app:layout_constraintTop_toBottomOf="@+id/input_post" />
+
+        <Button
+            android:id="@+id/picker"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@drawable/pick_image_btn"
+            android:drawableStart="@mipmap/pickimage"
+            android:stateListAnimator="@null"
+            android:text="Chọn ảnh"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            android:drawableLeft="@mipmap/pickimage" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

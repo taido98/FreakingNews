@@ -25,10 +25,8 @@
     <EditText
         android:id="@+id/inputCmt"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="-0.5dp"
-        android:layout_marginEnd="-0.5dp"
-        android:layout_marginBottom="-0.5dp"
         android:background="@drawable/input"
         android:ems="10"
         android:hint="@string/inputHint"
@@ -37,7 +35,7 @@
         android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/submit_cmt"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -45,13 +43,14 @@
         android:id="@+id/submit_cmt"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/input"
         android:text="Đăng"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#0078FF"
         android:textSize="16sp"
+        android:stateListAnimator="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/inputCmt"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listComment"
         app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

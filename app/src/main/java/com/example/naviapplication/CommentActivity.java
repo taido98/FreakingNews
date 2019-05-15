@@ -29,7 +29,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CommentActivity extends AppCompatActivity {
 
@@ -48,10 +51,13 @@ public class CommentActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         idPost = Integer.valueOf(intent.getStringExtra("idPost"));
 
-        User user = new User(this);
+        final User user = new User(this);
         idUser = user.getId();
 
         listCmt = (RecyclerView) findViewById(R.id.listComment);
+        commentAdapter = new CommentAdapter(list,CommentActivity.this);
+        listCmt.setAdapter(commentAdapter);
+        listCmt.setLayoutManager(new LinearLayoutManager(CommentActivity.this, LinearLayoutManager.VERTICAL, false));
 
         loadCmt(urlComment);
 
@@ -61,8 +67,15 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 EditText input = (EditText) findViewById(R.id.inputCmt) ;
+                DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+                Comment newCmt = new Comment(user.getName(),input.getText().toString(),user.getUrl_avatar(),sdf.format(date)
+                );
+                list.add(newCmt);
+                commentAdapter.notifyItemInserted(list.size()-1 );
+                listCmt.scrollToPosition(list.size()-1);
                 Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
-                addCmt(urlComment,input.getText().toString().trim());
+                addCmt(urlComment,input.getText().toString());
                 input.setText("");
             }
         });
@@ -92,9 +105,7 @@ public class CommentActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                        commentAdapter = new CommentAdapter(list,CommentActivity.this);
-                        listCmt.setAdapter(commentAdapter);
-                        listCmt.setLayoutManager(new LinearLayoutManager(CommentActivity.this, LinearLayoutManager.VERTICAL, false));
+                        commentAdapter.notifyDataSetChanged();
                         Toast.makeText(CommentActivity.this,"Load thanh cong",Toast.LENGTH_LONG).show();
                     }
                 },
@@ -116,7 +127,7 @@ public class CommentActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         if(response.trim().equals("Success")){
                             Toast.makeText(CommentActivity.this,"Comment thành công"+idUser,Toast.LENGTH_LONG).show();
-                            loadCmt(urlComment);
+//                            loadCmt(urlComment);
                         }
                         else
                             Toast.makeText(CommentActivity.this,response,Toast.LENGTH_LONG).show();
