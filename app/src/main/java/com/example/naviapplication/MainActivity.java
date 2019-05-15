@@ -50,7 +50,9 @@ import com.example.naviapplication.service.XMLDOMParser;
 import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.CustomAdapter;
 import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     CustomAdapter customAdapter;
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
-    TextView c_name, c_email;
+    TextView c_name, c_email, auth;
     private int idUser;
     ip ip = new ip();
     private String title_news, link_news;
@@ -105,28 +107,24 @@ public class MainActivity extends AppCompatActivity
 
         listView = (SwipeMenuListView) findViewById(R.id.listView);
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         c_avatar = (ImageView) headerView.findViewById(R.id.c_avatar);
         c_name = (TextView) headerView.findViewById(R.id.c_name);
         c_email = (TextView) headerView.findViewById(R.id.c_email);
 
         User user = new User(this);
         idUser=user.getId();
-        if(user.getEmail().equals("null")){
-            c_name.setText("Freaking News");
-            c_email.setText("Freakingnews@freakingnews.com");
-            c_avatar.setImageResource(R.mipmap.ic_icon_round);
+        c_name.setText(user.getName());
+        c_email.setText(user.getEmail());
+        if(user.getUrl_avatar().equals("null")){
+            c_avatar.setImageResource(R.mipmap.ic_launcher_round);
         }
         else{
-            c_name.setText(user.getName());
-            c_email.setText(user.getEmail());
-            if(user.getUrl_avatar().equals("")){
-//                Toast.makeText(MainActivity.this, user.getUrl_avatar(), Toast.LENGTH_SHORT).show();
-                c_avatar.setImageResource(R.mipmap.ic_icon_round);
-            }
-            else{
-
-                Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
-            }
+            Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
         }
 
         articles = new ArrayList<Article>();
@@ -225,9 +223,6 @@ public class MainActivity extends AppCompatActivity
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-
-
                     }
                 });
     }
@@ -305,24 +300,24 @@ public class MainActivity extends AppCompatActivity
                     break;
                 }
                 case R.id.nav_auth: {
-//                    User user = new User(this);
-                    if(c_email.getText()=="Freakingnews@freakingnews.com"){
+                    User user = new User(this);
+                    if(user.getEmail()=="Freakingnews@freakingnews.com"){
                         articles.clear();
-                        Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
-                        MainActivity.this.startActivity(intent2);
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        MainActivity.this.startActivity(intent);
                         finish();
                         break;
                     }
                     else {
-//                        articles.clear();
                         SharedPreferences sharedPreferences = getSharedPreferences("DoUSer", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear();
                         editor.apply();
+                        signOut();
                         AccessToken.setCurrentAccessToken(null);
-                        finish();
-                        startActivity(getIntent());
-//                        finish();
+                        c_name.setText(user.getName());
+                        c_email.setText(user.getEmail());
+                        c_avatar.setImageResource(R.mipmap.ic_launcher_round);
                         break;
                     }
 

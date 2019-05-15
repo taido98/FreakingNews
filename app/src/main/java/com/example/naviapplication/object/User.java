@@ -14,8 +14,8 @@ public class User {
 
     public User(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("DoUSer", MODE_PRIVATE);
-        this.name = sharedPreferences.getString("name","null");
-        this.email = sharedPreferences.getString("email" , "null");
+        this.name = sharedPreferences.getString("name","Freaking News");
+        this.email = sharedPreferences.getString("email" , "Freakingnews@freakingnews.com");
         this.url_avatar = sharedPreferences.getString("url","null");
         this.id = Integer.valueOf(sharedPreferences.getString("idUser","0"));
     }
