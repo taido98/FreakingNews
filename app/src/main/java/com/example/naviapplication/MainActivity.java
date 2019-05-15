@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -81,10 +80,11 @@ public class MainActivity extends AppCompatActivity
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
     TextView c_name, c_email;
-    MenuItem nav_auth;
     private int idUser;
     ip ip = new ip();
-    private String title_news, link_news;
+    Menu menu;
+    MenuItem auth;
+    private String title_news, link_news, url_news;
     private GoogleSignInClient mGoogleSignInClient;
     String urlSave ="http://"+ip.getIp()+"/FreakingNews/getSave.php";
 
@@ -108,10 +108,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
 
-        Menu menu = navigationView.getMenu();
-
-        nav_auth = menu.findItem(R.id.nav_auth);
-
+        menu = navigationView.getMenu();
+        auth = menu.findItem(R.id.nav_auth);
         listView = (SwipeMenuListView) findViewById(R.id.listView);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -128,12 +126,12 @@ public class MainActivity extends AppCompatActivity
         c_name.setText(user.getName());
         c_email.setText(user.getEmail());
         if(user.getUrl_avatar().equals("null")){
+            auth.setTitle("Đăng nhập/Đăng ký");
             c_avatar.setImageResource(R.mipmap.ic_launcher_round);
-            nav_auth.setTitle("Đăng nhập/Đăng ký");
         }
         else{
+            auth.setTitle("Đăng xuất");
             Glide.with(this).load(user.getUrl_avatar()).into(c_avatar);
-            nav_auth.setTitle("Đăng xuất");
         }
 
         articles = new ArrayList<Article>();
@@ -196,7 +194,7 @@ public class MainActivity extends AppCompatActivity
                         case 1:
                             title_news = articles.get(position).title;
                             link_news =  articles.get(position).link;
-
+                            url_news = articles.get(position).image;
                             addSave(urlSave);
                             //urlSave la cai nao day
 //                            Toast.makeText(MainActivity.this, title_news, Toast.LENGTH_LONG).show();
@@ -324,11 +322,10 @@ public class MainActivity extends AppCompatActivity
                         editor.apply();
                         signOut();
                         AccessToken.setCurrentAccessToken(null);
-                        user = new User(this);
+                        user= new User(this);
                         c_name.setText(user.getName());
                         c_email.setText(user.getEmail());
                         c_avatar.setImageResource(R.mipmap.ic_launcher_round);
-                        nav_auth.setTitle("Đăng nhập/Đăng ký");
                         break;
                     }
 
@@ -376,6 +373,7 @@ public class MainActivity extends AppCompatActivity
                 params.put("idUser", ""+idUser);
                 params.put("title_news", title_news);
                 params.put("link_news", link_news);
+                params.put("url_news", url_news);
                 return params;
             }
         };

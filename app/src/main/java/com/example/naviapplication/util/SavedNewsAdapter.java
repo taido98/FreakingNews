@@ -6,18 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.naviapplication.object.Article;
+//import com.example.naviapplication.object.Article;
 import com.example.naviapplication.R;
+import com.example.naviapplication.object.ArticleSave;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SavedNewsAdapter extends ArrayAdapter<Article> {
+public class SavedNewsAdapter extends ArrayAdapter<ArticleSave> {
+    private List<ArticleSave> items;
 
-    public SavedNewsAdapter(Context context, int resource, List<Article> items) {
+    public SavedNewsAdapter(Context context, int resource, List<ArticleSave> items) {
         super(context, resource, items);
     }
 
@@ -29,13 +32,13 @@ public class SavedNewsAdapter extends ArrayAdapter<Article> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             view =  inflater.inflate(R.layout.saved_item, null);
         }
-        Article p = getItem(position);
+        ArticleSave p = getItem(position);
         if (p != null) {
             // Anh xa + Gan gia tri
             TextView txtTitle = (TextView) view.findViewById(R.id.savedTitle);
             txtTitle.setText(p.title);
-            TextView txtPubDate = (TextView) view.findViewById(R.id.savedPubDate);
-            txtPubDate.setText(p.pubDate);
+//            TextView txtPubDate = (TextView) view.findViewById(R.id.savedPubDate);
+//            txtPubDate.setText(p.pubDate);
             ImageView imageView = (ImageView) view.findViewById(R.id.savedIamge);
             Picasso.get().load(p.image).into(imageView);
         }

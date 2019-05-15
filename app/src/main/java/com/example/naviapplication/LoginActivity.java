@@ -145,6 +145,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             name=acct.getDisplayName();
             email = acct.getEmail();
             url_avatar= acct.getPhotoUrl() != null ? acct.getPhotoUrl().toString() : "";
+            if(url_avatar=="")
+            {
+                url_avatar="https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144_960_720.png?fbclid=IwAR2q20Tc1tDUNh3N860J37uXH55VJmHKEAj_S8cFIuFcVbHMgQx9NKVTb_o";
+            }
 //            Toast.makeText(LoginActivity.this,url_avatar, Toast.LENGTH_LONG).show();
             addUser(urlInsert);
         }
