@@ -13,6 +13,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -37,6 +39,8 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.ip;
+import com.example.naviapplication.util.AddImageAdapter;
+import com.example.naviapplication.util.PostAdapter;
 import com.example.naviapplication.util.RealPathUtil;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -56,7 +60,6 @@ import java.util.Map;
 public class AddPostActivity extends AppCompatActivity {
 
     private ImageView imageView;
-    private LinearLayout imagePick;
     private ArrayList<String> imgName, imgCode ;
     private String idTopic;
     private int idUser;
@@ -66,6 +69,7 @@ public class AddPostActivity extends AppCompatActivity {
     private EditText input_post;
     private int REQUEST_GALLERY_IMAGE = 100;
     private TextView name;
+    private RecyclerView recyclerView;
     String urlAddPost = "http://"+ip.getIp()+"/FreakingNews/newPost.php";
 
     @Override
@@ -81,10 +85,10 @@ public class AddPostActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
 
         imageView = findViewById(R.id.avatar_post);
-        imagePick = (LinearLayout) findViewById(R.id.imagePick);
         category_post = (Spinner) findViewById(R.id.category_post);
         input_post = (EditText) findViewById(R.id.input_post);
         name = (TextView) findViewById(R.id.name_post);
+        recyclerView = (RecyclerView) findViewById(R.id.imageAddPost);
 
         User user = new User(this);
         idUser = user.getId();
@@ -164,9 +168,6 @@ public class AddPostActivity extends AppCompatActivity {
                     uri.add(mImageUri);
                     //Get name
                     imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
-                    ImageView image = new ImageView(this);
-                    Glide.with(this).load(mImageUri).override(300,300).centerCrop().into(image);
-                    imagePick.addView(image);
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
@@ -178,12 +179,11 @@ public class AddPostActivity extends AppCompatActivity {
 //                            bitmap.add(MediaStore.Images.Media.getBitmap(getContentResolver(), uri));
                             //Get name
                             imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
-                            ImageView image = new ImageView(this);
-                            Glide.with(this).load(mImageUri).override(300,300).centerCrop().into(image);
-                            imagePick.addView(image);
                         }
                     }
                 }
+                recyclerView.setAdapter(new AddImageAdapter(uri));
+                recyclerView.setLayoutManager(new LinearLayoutManager(AddPostActivity.this, LinearLayoutManager.HORIZONTAL, false));
             } else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
