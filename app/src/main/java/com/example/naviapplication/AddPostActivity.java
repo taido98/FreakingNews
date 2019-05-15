@@ -160,14 +160,11 @@ public class AddPostActivity extends AppCompatActivity {
             // When an Image is picked
             if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK
                     && null != data) {
-                imgName = new ArrayList<>();
                 uri = new ArrayList<>();
                 if(data.getData()!=null){
                     String PATH = RealPathUtil.getRealPath(AddPostActivity.this, data.getData());
                     Uri mImageUri= Uri.fromFile(new File(PATH));
                     uri.add(mImageUri);
-                    //Get name
-                    imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
@@ -176,9 +173,6 @@ public class AddPostActivity extends AppCompatActivity {
                             String PATH = RealPathUtil.getRealPath(AddPostActivity.this, item.getUri());
                             Uri mImageUri = Uri.fromFile(new File(PATH));
                             uri.add(mImageUri);
-//                            bitmap.add(MediaStore.Images.Media.getBitmap(getContentResolver(), uri));
-                            //Get name
-                            imgName.add(PATH.substring(PATH.lastIndexOf("/")+1));
                         }
                     }
                 }
@@ -224,13 +218,15 @@ public class AddPostActivity extends AppCompatActivity {
                     }
                 }){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams(){
                 Map<String, String> params = new HashMap<>();
                 imgCode = new ArrayList<>();
-                params.put("size",""+imgName.size());
-                for(int i = 0; i < imgName.size(); i++){
+                imgName = new ArrayList<>();
+                params.put("size",""+uri.size());
+                for(int i = 0; i < uri.size(); i++){
                     try {
                         imgCode.add(getBitMap(MediaStore.Images.Media.getBitmap(getContentResolver(), uri.get(i))));
+                        imgName.add(uri.get(i).toString().substring(uri.get(i).toString().lastIndexOf("/")+1));
                         params.put("imgName"+i,imgName.get(i));
                         params.put("imgCode"+i,imgCode.get(i));
                     } catch (IOException e) {
