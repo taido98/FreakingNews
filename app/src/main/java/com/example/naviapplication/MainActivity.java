@@ -49,6 +49,7 @@ import com.example.naviapplication.object.User;
 import com.example.naviapplication.service.XMLDOMParser;
 import com.example.naviapplication.service.ip;
 import com.example.naviapplication.util.CustomAdapter;
+import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -318,6 +319,7 @@ public class MainActivity extends AppCompatActivity
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear();
                         editor.apply();
+                        AccessToken.setCurrentAccessToken(null);
                         finish();
                         startActivity(getIntent());
 //                        finish();
