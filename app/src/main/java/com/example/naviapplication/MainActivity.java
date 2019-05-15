@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity
     private static String cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     ImageView c_avatar;
     TextView c_name, c_email;
-    private String name, email, url_avatar;
     private int idUser;
     ip ip = new ip();
     private String title_news, link_news;
