@@ -8,14 +8,14 @@
     android:layout_height="match_parent"
     tools:context=".PostActivity">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listComment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#FFFFFF"
         android:divider="@null"
-        android:scrollbars="none"
         android:elevation="0.5dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/inputCmt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

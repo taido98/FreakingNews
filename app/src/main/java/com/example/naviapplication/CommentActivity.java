@@ -3,6 +3,9 @@ package com.example.naviapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +34,7 @@ import java.util.ArrayList;
 public class CommentActivity extends AppCompatActivity {
 
     ArrayList<Comment> list = new ArrayList<>();
-    ListView listCmt;
+    RecyclerView listCmt;
     CommentAdapter commentAdapter;
     ip ip = new ip();
     int idPost, idUser;
@@ -48,7 +51,7 @@ public class CommentActivity extends AppCompatActivity {
         User user = new User(this);
         idUser = user.getId();
 
-        listCmt = (ListView) findViewById(R.id.listComment);
+        listCmt = (RecyclerView) findViewById(R.id.listComment);
 
         loadCmt(urlComment);
 
@@ -91,6 +94,7 @@ public class CommentActivity extends AppCompatActivity {
                         }
                         commentAdapter = new CommentAdapter(list,CommentActivity.this);
                         listCmt.setAdapter(commentAdapter);
+                        listCmt.setLayoutManager(new LinearLayoutManager(CommentActivity.this, LinearLayoutManager.VERTICAL, false));
                         Toast.makeText(CommentActivity.this,"Load thanh cong",Toast.LENGTH_LONG).show();
                     }
                 },

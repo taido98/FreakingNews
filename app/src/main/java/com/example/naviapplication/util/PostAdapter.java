@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
         holder.vote.setText(""+post.getVote());
         Picasso.get().load(post.getUrl_avatar()).into(holder.avatar);
         holder.imagePost.setAdapter(new ImageAdapter(post.getListImage()));
+        holder.imagePost.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if(post.getListImage().size() == 1){
             holder.positionImage.setBackgroundColor(0x00000000);
             holder.positionImage.setText("");
