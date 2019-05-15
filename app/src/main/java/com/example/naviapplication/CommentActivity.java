@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +43,8 @@ public class CommentActivity extends AppCompatActivity {
     CommentAdapter commentAdapter;
     ip ip = new ip();
     int idPost, idUser;
+    EditText input;
+    Button submit;
     String urlComment = "http://"+ip.getIp()+"/FreakingNews/getCmt.php";
 
     @Override
@@ -54,6 +58,7 @@ public class CommentActivity extends AppCompatActivity {
         final User user = new User(this);
         idUser = user.getId();
 
+        input = (EditText) findViewById(R.id.inputCmt);
         listCmt = (RecyclerView) findViewById(R.id.listComment);
         commentAdapter = new CommentAdapter(list,CommentActivity.this);
         listCmt.setAdapter(commentAdapter);
@@ -61,27 +66,55 @@ public class CommentActivity extends AppCompatActivity {
 
         loadCmt(urlComment);
 
-        Button submit = findViewById(R.id.submit_cmt);
+        submit = findViewById(R.id.submit_cmt);
+
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkEmpty();
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText input = (EditText) findViewById(R.id.inputCmt) ;
-                DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = new Date();
-                Comment newCmt = new Comment(user.getName(),input.getText().toString(),user.getUrl_avatar(),sdf.format(date)
-                );
-                list.add(newCmt);
-                commentAdapter.notifyItemInserted(list.size()-1 );
-                listCmt.scrollToPosition(list.size()-1);
-                Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
-                addCmt(urlComment,input.getText().toString());
-                input.setText("");
+                if(checkEmpty()){
+                    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date date = new Date();
+                    Comment newCmt = new Comment(user.getName(),input.getText().toString(),user.getUrl_avatar(),sdf.format(date));
+                    list.add(newCmt);
+                    commentAdapter.notifyItemInserted(list.size()-1 );
+                    listCmt.scrollToPosition(list.size()-1);
+                    Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
+                    addCmt(urlComment,input.getText().toString());
+                    input.setText("");
+                }
+                else
+                    Toast.makeText(CommentActivity.this,"Vui lòng nhập bình luận",Toast.LENGTH_LONG).show();
             }
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+    }
+
+    protected boolean checkEmpty(){
+        if(input.getText().toString().equals("")){
+            submit.setTextColor(0x4F4285F4);
+            return false;
+        }
+        submit.setTextColor(0xFF4285F4);
+        return true;
     }
 
     private void loadCmt(String url){

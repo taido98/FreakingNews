@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.example.naviapplication.R;
 import com.squareup.picasso.Picasso;
@@ -41,7 +40,7 @@ public class AddImageAdapter extends RecyclerView.Adapter<AddImageAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 listUri.remove(viewHolder.getPosition());
-                notifyDataSetChanged();
+                notifyItemRemoved(viewHolder.getPosition());
             }
         });
     }

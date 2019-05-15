@@ -20,6 +20,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private List<Comment> listComment;
     private Context context;
     private LayoutInflater inflater;
+    private SetDate setDate;
 
     public CommentAdapter(List<Comment> listComment, Context context) {
         this.listComment = listComment;
@@ -41,7 +42,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Picasso.get().load(comment.getUrl_avatar()).into(viewHolder.avatar);
         viewHolder.content.setText(comment.getContent());
         viewHolder.name.setText(comment.getName());
-        viewHolder.date.setText(comment.getDate());
+        setDate = new SetDate(comment.getDate());
+        viewHolder.date.setText(setDate.getDate());
     }
 
     @Override

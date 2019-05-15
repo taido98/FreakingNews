@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -60,10 +62,11 @@ import java.util.Map;
 public class AddPostActivity extends AppCompatActivity {
 
     private ImageView imageView;
+    private Button post;
     private ArrayList<String> imgName, imgCode ;
     private String idTopic;
     private int idUser;
-    private ArrayList<Uri> uri;
+    private ArrayList<Uri> uri = new ArrayList<>();
     private ip ip = new ip();
     private Spinner category_post;
     private EditText input_post;
@@ -89,9 +92,11 @@ public class AddPostActivity extends AppCompatActivity {
         input_post = (EditText) findViewById(R.id.input_post);
         name = (TextView) findViewById(R.id.name_post);
         recyclerView = (RecyclerView) findViewById(R.id.imageAddPost);
+        post = (Button) findViewById(R.id.add_post);
 
         User user = new User(this);
         idUser = user.getId();
+        idTopic = "0";
 
         category_post.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -100,12 +105,32 @@ public class AddPostActivity extends AppCompatActivity {
                     idTopic = "1";
                 else if(category_post.getSelectedItem().toString().equals("Thể thao"))
                     idTopic = "2";
-                else idTopic = "3";
+                else if(category_post.getSelectedItem().toString().equals("Công nghệ"))
+                    idTopic = "3";
+                else idTopic = "0";
+                checkEmpty();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        input_post.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkEmpty();
             }
         });
 
@@ -120,14 +145,38 @@ public class AddPostActivity extends AppCompatActivity {
             }
         });
 
-        Button post = (Button) findViewById(R.id.add_post);
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddPostActivity.this.startActivity(new Intent(AddPostActivity.this,PostActivity.class));
-                upload(urlAddPost);
+                if(checkEmpty().equals("true")){
+                    AddPostActivity.this.startActivity(new Intent(AddPostActivity.this,PostActivity.class));
+                    upload(urlAddPost);
+                }
+                else {
+                    Toast.makeText(AddPostActivity.this,checkEmpty(),Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    protected String checkEmpty(){
+        if(idTopic.equals("0")){
+            post.setBackgroundResource(R.drawable.add_post_button_fail);
+            post.setTextColor(0xB4CACACA);
+            return "Vui lòng chọn thể loại muốn đăng";
+        }
+        if(input_post.getText().toString().equals("")){
+            post.setBackgroundResource(R.drawable.add_post_button_fail);
+            post.setTextColor(0xB4CACACA);
+            return "Vui lòng viết nội dung bài đăng";
+        }if(uri.size() == 0){
+            post.setBackgroundResource(R.drawable.add_post_button_fail);
+            post.setTextColor(0xB4CACACA);
+            return "Vui lòng chọn hình ảnh";
+        }
+        post.setBackgroundResource(R.drawable.custom_add_post);
+        post.setTextColor(0xFFFFFFFF);
+        return "true";
     }
 
     protected void onGallerySelected(){
@@ -160,7 +209,6 @@ public class AddPostActivity extends AppCompatActivity {
             // When an Image is picked
             if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == RESULT_OK
                     && null != data) {
-                uri = new ArrayList<>();
                 if(data.getData()!=null){
                     String PATH = RealPathUtil.getRealPath(AddPostActivity.this, data.getData());
                     Uri mImageUri= Uri.fromFile(new File(PATH));
@@ -187,6 +235,7 @@ public class AddPostActivity extends AppCompatActivity {
                     .show();
         }
 //        Toast.makeText(this,imgName)
+        checkEmpty();
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -208,7 +257,6 @@ public class AddPostActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(AddPostActivity.this, response,Toast.LENGTH_LONG).show();
-                        Log.d("imageCode", response);
                     }
                 },
                 new Response.ErrorListener() {

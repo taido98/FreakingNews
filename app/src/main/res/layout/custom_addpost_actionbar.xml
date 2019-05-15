@@ -27,11 +27,11 @@
         android:layout_width="80dp"
         android:layout_height="35dp"
         android:layout_margin="0dp"
-        android:background="@drawable/custom_add_post"
+        android:background="@drawable/add_post_button_fail"
         android:padding="0dp"
         android:text="Đăng"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#B4CACACA"
         app:layout_constraintBottom_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/title" />

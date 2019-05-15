@@ -36,6 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
     private int idUser;
     private ip ip = new ip();
     private User user;
+    private SetDate setDate;
 
     public PostAdapter(Context context, ArrayList<Post> listPost) {
         this.context = context;
@@ -68,7 +69,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             holder.downBtn.setImageResource(R.mipmap.vote_down);
         }
         holder.name.setText(post.getName());
-        holder.date.setText(post.getDate());
+        setDate = new SetDate(post.getDate());
+        holder.date.setText(setDate.getDate());
         holder.content.setText(post.getContent());
         holder.vote.setText(""+post.getVote());
         Picasso.get().load(post.getUrl_avatar()).into(holder.avatar);
