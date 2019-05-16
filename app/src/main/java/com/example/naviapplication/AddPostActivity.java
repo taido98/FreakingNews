@@ -257,7 +257,7 @@ public class AddPostActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        Toast.makeText(AddPostActivity.this, response,Toast.LENGTH_LONG).show();
+                        Toast.makeText(AddPostActivity.this, "Đăng bài thành công!",Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {

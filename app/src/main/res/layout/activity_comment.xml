@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/containerCmt"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,49 +9,56 @@
     android:layout_height="match_parent"
     tools:context=".PostActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listComment"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#FFFFFF"
-        android:divider="@null"
-        android:elevation="0.5dp"
-        android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@+id/inputCmt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listComment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#FFFFFF"
+            android:divider="@null"
+            android:elevation="0.5dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/inputCmt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/inputCmt"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="-0.5dp"
-        android:background="@drawable/input"
-        android:ems="10"
-        android:hint="@string/inputHint"
-        android:inputType="textShortMessage|textLongMessage|textMultiLine|textPersonName"
-        android:padding="15dp"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/submit_cmt"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        <EditText
+            android:id="@+id/inputCmt"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="-0.5dp"
+            android:background="@drawable/input"
+            android:ems="10"
+            android:gravity="start|center_vertical"
+            android:hint="@string/inputHint"
+            android:inputType="textShortMessage|textLongMessage|textMultiLine|textPersonName"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/submit_cmt"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/submit_cmt"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@drawable/input"
-        android:stateListAnimator="@null"
-        android:text="Đăng"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#4F4285F4"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listComment"
-        app:layout_constraintVertical_bias="0.0" />
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/submit_cmt"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/input"
+            android:stateListAnimator="@null"
+            android:text="Đăng"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#4F4285F4"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listComment"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

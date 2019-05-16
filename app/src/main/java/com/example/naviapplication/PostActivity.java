@@ -71,18 +71,18 @@ public class PostActivity extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 loadPost(urlPost, category.getSelectedItem().toString());
-                containerPost.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-//                        loadPost(urlPost, category.getSelectedItem().toString());
-                        containerPost.setRefreshing(false);
-                    }
-                });
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        containerPost.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadPost(urlPost, category.getSelectedItem().toString());
+                containerPost.setRefreshing(false);
             }
         });
 
@@ -133,13 +133,14 @@ public class PostActivity extends AppCompatActivity{
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            postAdapter.notifyDataSetChanged();
                         }
+                        postAdapter.notifyDataSetChanged();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        postAdapter.notifyDataSetChanged();
                         Log.d("Lỗi",error.toString());
                     }
                 });
@@ -150,7 +151,7 @@ public class PostActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home : onBackPressed();
-            return true;
+                return true;
             default:break;
         }
         return super.onOptionsItemSelected(item);

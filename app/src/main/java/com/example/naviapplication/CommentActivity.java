@@ -1,6 +1,7 @@
 package com.example.naviapplication;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ public class CommentActivity extends AppCompatActivity {
     EditText input;
     Button submit;
     String urlComment = "http://"+ip.getIp()+"/FreakingNews/getCmt.php";
+    SwipeRefreshLayout containerCmt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,16 @@ public class CommentActivity extends AppCompatActivity {
                 checkEmpty();
             }
         });
+
+        containerCmt = (SwipeRefreshLayout) findViewById(R.id.containerCmt);
+        containerCmt.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadCmt(urlComment);
+                containerCmt.setRefreshing(false);
+            }
+        });
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +157,7 @@ public class CommentActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(CommentActivity.this,"Kết nối server không thành công!",Toast.LENGTH_LONG).show();
+//                        Toast.makeText(CommentActivity.this,"Kết nối server không thành công!",Toast.LENGTH_LONG).show();
                     }
                 });
         requestQueue.add(jsonArrayRequest);

@@ -180,7 +180,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
             commentButton = (Button) itemView.findViewById(R.id.commentButton);
             imagePost = (ViewPager) itemView.findViewById(R.id.imagePost);
         }
-        
+
     }
 
     private void setStt(String url, int idPost, int setStatus){
@@ -190,13 +190,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecyclerViewHo
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context,response,Toast.LENGTH_LONG).show();
+//                        Toast.makeText(context,response,Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context,"Loi\n"+error,Toast.LENGTH_LONG);
+                        Toast.makeText(context,"Kết nối server không thành công!",Toast.LENGTH_LONG);
                     }
                 });
         requestQueue.add(stringRequest);
