@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -63,8 +64,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        SharedPreferences sharedPreferences = getSharedPreferences("DoUSer", MODE_PRIVATE);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -72,9 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         fb_login = findViewById(R.id.fb_login);
         gg_login = findViewById(R.id.gg_login);
-        sign_out = findViewById(R.id.sign_out);
         findViewById(R.id.gg_login).setOnClickListener(this);
-        findViewById(R.id.sign_out).setOnClickListener(this);
         callbackManager = CallbackManager.Factory.create();
         fb_login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -213,9 +214,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sign_out:
-                signOut();
-                break;
+//            case R.id.sign_out:
+//                signOut();
+//                break;
 //            //
             case R.id.gg_login:
                 signIn();

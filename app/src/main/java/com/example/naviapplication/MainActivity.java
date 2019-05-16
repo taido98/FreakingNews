@@ -192,10 +192,21 @@ public class MainActivity extends AppCompatActivity
                             shareIt(articles.get(position));
                             break;
                         case 1:
-                            title_news = articles.get(position).title;
-                            link_news =  articles.get(position).link;
-                            url_news = articles.get(position).image;
-                            addSave(urlSave);
+                            User user = new User(MainActivity.this);
+                            if(user.getEmail()=="Freakingnews@freakingnews.com"){
+                                articles.clear();
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                MainActivity.this.startActivity(intent);
+                                finish();
+                                Toast.makeText(MainActivity.this, "Vui lòng đăng nhập", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            else {
+                                title_news = articles.get(position).title;
+                                link_news =  articles.get(position).link;
+                                url_news = articles.get(position).image;
+                                addSave(urlSave);
+                            }
                             //urlSave la cai nao day
 //                            Toast.makeText(MainActivity.this, title_news, Toast.LENGTH_LONG).show();
                             //TODO 1: sự kiện longclick để lưu tin vào data, thêm code ở đây
@@ -293,18 +304,41 @@ public class MainActivity extends AppCompatActivity
                     break;
                 }
                 case R.id.nav_saved: {
-                    articles.clear();
-                    customAdapter.notifyDataSetChanged();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new SavedNewsFragment()).commit();
-                    break;
+                    User user = new User(this);
+                    if(user.getEmail()=="Freakingnews@freakingnews.com"){
+                        articles.clear();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        MainActivity.this.startActivity(intent);
+                        finish();
+                        Toast.makeText(MainActivity.this, "Vui lòng đăng nhập", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    else {
+                        articles.clear();
+                        customAdapter.notifyDataSetChanged();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new SavedNewsFragment()).commit();
+                        break;
+                    }
+
                 }
                 case R.id.nav_story: {
-                    articles.clear();
-                    Intent intent = new Intent(MainActivity.this, PostActivity.class);
-                    MainActivity.this.startActivity(intent);
-                    finish();
-                    break;
+                    User user = new User(this);
+                    if(user.getEmail()=="Freakingnews@freakingnews.com"){
+                        articles.clear();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        MainActivity.this.startActivity(intent);
+                        finish();
+                        Toast.makeText(MainActivity.this, "Vui lòng đăng nhập", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    else{
+                        articles.clear();
+                        Intent intent = new Intent(MainActivity.this, PostActivity.class);
+                        MainActivity.this.startActivity(intent);
+                        finish();
+                        break;
+                    }
                 }
                 case R.id.nav_auth: {
                     User user = new User(this);
@@ -326,6 +360,7 @@ public class MainActivity extends AppCompatActivity
                         c_name.setText(user.getName());
                         c_email.setText(user.getEmail());
                         c_avatar.setImageResource(R.mipmap.ic_launcher_round);
+                        auth.setTitle("Đăng nhập/Đăng ký");
                         break;
                     }
 

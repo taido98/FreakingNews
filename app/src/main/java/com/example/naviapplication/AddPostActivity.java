@@ -151,6 +151,7 @@ public class AddPostActivity extends AppCompatActivity {
                 if(checkEmpty().equals("true")){
                     AddPostActivity.this.startActivity(new Intent(AddPostActivity.this,PostActivity.class));
                     upload(urlAddPost);
+                    finish();
                 }
                 else {
                     Toast.makeText(AddPostActivity.this,checkEmpty(),Toast.LENGTH_LONG).show();

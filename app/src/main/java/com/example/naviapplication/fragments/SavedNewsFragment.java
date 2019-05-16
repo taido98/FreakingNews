@@ -1,5 +1,6 @@
 package com.example.naviapplication.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,6 +25,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.naviapplication.MainActivity;
+import com.example.naviapplication.WebViewActivity;
 import com.example.naviapplication.object.ArticleSave;
 
 import com.example.naviapplication.object.User;
@@ -105,13 +108,20 @@ public class SavedNewsFragment extends Fragment {
             }
         };
         listView.setMenuCreator(creator);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("link", savedArticle.get(position).link);
+                startActivity(intent);
+            }
+        });
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-//                        ((MainActivity)getActivity()).shareIt(savedArticle.get(position));
+                        shareItSave(savedArticle.get(position));
                         break;
                     case 1:
                         // TODO 4: tạo chức năng xóa tin đã lưu tại đây
@@ -127,7 +137,14 @@ public class SavedNewsFragment extends Fragment {
 
         return rootview;
     }
-
+    public void shareItSave(ArticleSave p) {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String sharebody = p.link;
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "subject here");
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, sharebody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
     private void loadSave(String url){
         savedArticle.removeAll(savedArticle);
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
