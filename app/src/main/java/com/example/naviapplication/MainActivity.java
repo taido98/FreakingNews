@@ -275,6 +275,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             switch (id) {
                 case R.id.nav_home: {
+                    cate = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
                     articles.clear();
                     home.setCheckable(true);
                     customAdapter.notifyDataSetChanged();
