@@ -73,6 +73,7 @@ public class AddPostActivity extends AppCompatActivity {
     private int REQUEST_GALLERY_IMAGE = 100;
     private TextView name;
     private RecyclerView recyclerView;
+    private Intent postIntent;
     String urlAddPost = "http://"+ip.getIp()+"/FreakingNews/newPost.php";
 
     @Override
@@ -85,7 +86,7 @@ public class AddPostActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.custom_addpost_actionbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = this.getIntent();
+        final Intent intent = this.getIntent();
 
         imageView = findViewById(R.id.avatar_post);
         category_post = (Spinner) findViewById(R.id.category_post);
@@ -93,7 +94,7 @@ public class AddPostActivity extends AppCompatActivity {
         name = (TextView) findViewById(R.id.name_post);
         recyclerView = (RecyclerView) findViewById(R.id.imageAddPost);
         post = (Button) findViewById(R.id.add_post);
-
+        postIntent = new Intent(AddPostActivity.this,PostActivity.class);
         User user = new User(this);
         idUser = user.getId();
         idTopic = "0";
@@ -149,8 +150,8 @@ public class AddPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(checkEmpty().equals("true")){
-                    AddPostActivity.this.startActivity(new Intent(AddPostActivity.this,PostActivity.class));
                     upload(urlAddPost);
+                    AddPostActivity.this.startActivity(postIntent);
                     finish();
                 }
                 else {

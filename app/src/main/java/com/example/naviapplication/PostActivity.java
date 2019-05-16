@@ -53,7 +53,6 @@ public class PostActivity extends AppCompatActivity{
         getSupportActionBar().setCustomView(R.layout.custom_post_actionbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = this.getIntent();
         User user = new User(this);
         idUser = user.getId();
 //        Toast.makeText(this,""+idUser,Toast.LENGTH_LONG).show();
