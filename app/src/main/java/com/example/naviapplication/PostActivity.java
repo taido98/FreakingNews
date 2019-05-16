@@ -56,7 +56,7 @@ public class PostActivity extends AppCompatActivity{
         Intent intent = this.getIntent();
         User user = new User(this);
         idUser = user.getId();
-        Toast.makeText(this,""+idUser,Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,""+idUser,Toast.LENGTH_LONG).show();
 
         listPost = (RecyclerView) findViewById(R.id.listPost);
         postAdapter = new PostAdapter(PostActivity.this,list);

@@ -127,7 +127,6 @@ public class SavedNewsFragment extends Fragment {
                         // TODO 4: tạo chức năng xóa tin đã lưu tại đây
                         link = savedArticle.get(position).link;
                         DelSave(urlDelSave);
-//                        Toast.makeText(getActivity(), "delete post", Toast.LENGTH_LONG).show();
                         break;
                 }
                 // false : close the menu; true : not close the menu
@@ -152,7 +151,6 @@ public class SavedNewsFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Toast.makeText(SavedNewsFragment.this.getContext(),check+"",Toast.LENGTH_LONG).show();
                         for(int i = 0; i < response.length(); i++){
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -167,7 +165,6 @@ public class SavedNewsFragment extends Fragment {
                             }
                         }
                         savedNewsAdapter.notifyDataSetChanged();
-                        Toast.makeText(getActivity(),"Load thanh cong",Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {

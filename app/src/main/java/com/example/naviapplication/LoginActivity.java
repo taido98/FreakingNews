@@ -85,12 +85,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onCancel() {
-                Toast.makeText(LoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
+//                Toast.makeText(LoginActivity.this, "Login Cancel", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this, "Login Error", Toast.LENGTH_LONG).show();
+//                Toast.makeText(LoginActivity.this, "Login Error", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putString("url", url_avatar);
                         editor.putString("idUser" , response);
                         editor.apply();
-
+                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
                         LoginActivity.this.startActivity(intent);
                         finish();
                     }
@@ -180,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this,"@@@???", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this,"Kết nối server không thành công!", Toast.LENGTH_LONG).show();
                     }
                 }
         ){

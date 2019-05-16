@@ -1,4 +1,4 @@
-package com.example.naviapplication;
+package com.example.naviapplication.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,6 +10,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.Button;
+
+import com.example.naviapplication.R;
 
 public class IconButton extends android.support.v7.widget.AppCompatButton {
     private Bitmap mIcon;

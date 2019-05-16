@@ -95,7 +95,7 @@ public class CommentActivity extends AppCompatActivity {
                     list.add(newCmt);
                     commentAdapter.notifyItemInserted(list.size()-1 );
                     listCmt.scrollToPosition(list.size()-1);
-                    Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
+//                    Toast.makeText(CommentActivity.this,idPost+";"+idUser+";"+input.getText().toString().trim(),Toast.LENGTH_LONG).show();
                     addCmt(urlComment,input.getText().toString());
                     input.setText("");
                 }
@@ -139,13 +139,13 @@ public class CommentActivity extends AppCompatActivity {
                             }
                         }
                         commentAdapter.notifyDataSetChanged();
-                        Toast.makeText(CommentActivity.this,"Load thanh cong",Toast.LENGTH_LONG).show();
+//                        Toast.makeText(CommentActivity.this,"Load thanh cong",Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(CommentActivity.this,"Lỗi\n"+error,Toast.LENGTH_LONG).show();
+                        Toast.makeText(CommentActivity.this,"Kết nối server không thành công!",Toast.LENGTH_LONG).show();
                     }
                 });
         requestQueue.add(jsonArrayRequest);
@@ -158,18 +158,18 @@ public class CommentActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.trim().equals("Success")){
-                            Toast.makeText(CommentActivity.this,"Comment thành công"+idUser,Toast.LENGTH_LONG).show();
-//                            loadCmt(urlComment);
-                        }
-                        else
-                            Toast.makeText(CommentActivity.this,response,Toast.LENGTH_LONG).show();
+//                        if(response.trim().equals("Success")){
+//                            Toast.makeText(CommentActivity.this,"Comment thành công"+idUser,Toast.LENGTH_LONG).show();
+////                            loadCmt(urlComment);
+//                        }
+//                        else
+////                            Toast.makeText(CommentActivity.this,response,Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(CommentActivity.this,"Lỗi\n"+error,Toast.LENGTH_LONG).show();
+                        Toast.makeText(CommentActivity.this,"Kết nối server không thành công!",Toast.LENGTH_LONG).show();
                     }
                 });
         requestQueue.add(stringRequest);

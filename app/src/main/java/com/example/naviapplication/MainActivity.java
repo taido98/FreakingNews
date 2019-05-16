@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     private int idUser;
     ip ip = new ip();
     Menu menu;
-    MenuItem auth;
+    MenuItem auth, home, business, sport, tech, saved;
     private String title_news, link_news, url_news;
     private GoogleSignInClient mGoogleSignInClient;
     String urlSave ="http://"+ip.getIp()+"/FreakingNews/getSave.php";
@@ -110,6 +110,12 @@ public class MainActivity extends AppCompatActivity
 
         menu = navigationView.getMenu();
         auth = menu.findItem(R.id.nav_auth);
+        home = menu.findItem(R.id.nav_home);
+        home.setCheckable(true);
+        business = menu.findItem(R.id.nav_business);
+        sport = menu.findItem(R.id.nav_sport);
+        tech = menu.findItem(R.id.nav_tech);
+        saved = menu.findItem(R.id.nav_saved);
         listView = (SwipeMenuListView) findViewById(R.id.listView);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -188,7 +194,7 @@ public class MainActivity extends AppCompatActivity
                     switch (index) {
                         case 0:
                             //khi click vào nút share, gọi hàm shareIt() để share
-                            Toast.makeText(MainActivity.this, articles.get(position).image, Toast.LENGTH_LONG).show();
+//                            Toast.makeText(MainActivity.this, articles.get(position).image, Toast.LENGTH_LONG).show();
                             shareIt(articles.get(position));
                             break;
                         case 1:
@@ -270,6 +276,7 @@ public class MainActivity extends AppCompatActivity
             switch (id) {
                 case R.id.nav_home: {
                     articles.clear();
+                    home.setCheckable(true);
                     customAdapter.notifyDataSetChanged();
                     new ReadData().execute(cate);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -279,6 +286,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.nav_business: {
                     cate = "https://24h.com.vn/upload/rss/taichinhbatdongsan.rss";
                     articles.clear();
+                    business.setCheckable(true);
                     customAdapter.notifyDataSetChanged();
                     new ReadData().execute(cate);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -286,6 +294,7 @@ public class MainActivity extends AppCompatActivity
                     break;
                 }
                 case R.id.nav_sport: {
+                    sport.setCheckable(true);
                     cate = "https://24h.com.vn/upload/rss/thethao.rss";
                     articles.clear();
                     customAdapter.notifyDataSetChanged();
@@ -295,6 +304,7 @@ public class MainActivity extends AppCompatActivity
                     break;
                 }
                 case R.id.nav_tech: {
+                    tech.setCheckable(true);
                     cate = "https://24h.com.vn/upload/rss/congnghethongtin.rss";
                     articles.clear();
                     customAdapter.notifyDataSetChanged();
@@ -315,6 +325,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     else {
                         articles.clear();
+                        saved.setCheckable(true);
                         customAdapter.notifyDataSetChanged();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                                 new SavedNewsFragment()).commit();
@@ -387,13 +398,13 @@ public class MainActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Đã lưu", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "Xay ra loi", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Lỗi kết nối server", Toast.LENGTH_SHORT).show();
                         Log.d("@@@@@@????AAA","Loi!\n"+error.toString());
                     }
                 }

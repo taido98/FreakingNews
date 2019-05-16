@@ -228,12 +228,12 @@ public class AddPostActivity extends AppCompatActivity {
                 recyclerView.setAdapter(new AddImageAdapter(uri));
                 recyclerView.setLayoutManager(new LinearLayoutManager(AddPostActivity.this, LinearLayoutManager.HORIZONTAL, false));
             } else {
-                Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Bạn không chọn ảnh",
+//                        Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Something went wrong"+e.toString(), Toast.LENGTH_LONG)
-                    .show();
+//            Toast.makeText(this, "Something went wrong"+e.toString(), Toast.LENGTH_LONG)
+//                    .show();
         }
 //        Toast.makeText(this,imgName)
         checkEmpty();
@@ -257,13 +257,13 @@ public class AddPostActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(AddPostActivity.this, response,Toast.LENGTH_LONG).show();
+//                        Toast.makeText(AddPostActivity.this, response,Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AddPostActivity.this, "Lỗi\n"+error,Toast.LENGTH_LONG).show();
+                        Toast.makeText(AddPostActivity.this, "Kết nối server không thành công!",Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override

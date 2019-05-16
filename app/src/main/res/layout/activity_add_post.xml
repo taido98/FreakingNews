@@ -92,7 +92,7 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <com.example.naviapplication.IconButton
+    <com.example.naviapplication.util.IconButton
         android:id="@+id/picker"
         android:layout_width="0dp"
         android:layout_height="40dp"
